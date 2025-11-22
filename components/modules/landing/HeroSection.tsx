@@ -13,7 +13,7 @@ import {
 const HeroSection = () => {
   const menuItems = [
     { label: "Beranda", href: "/" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Dashboard", href: "/admin/dashboard" },
     { label: "Tentang Kami", href: "/about-us" },
     { label: "Gallery", href: "/gallery" },
     { label: "Artikel", href: "/article" },

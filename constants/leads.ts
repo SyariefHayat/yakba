@@ -1,0 +1,32 @@
+export const dummyLeads = [
+  {
+    id: "L001",
+    name: "Ayu Rahma",
+    email: "ayu.rahma@example.com",
+    phone: "081234567890",
+    message: "Saya ingin mendaftarkan anak saya ke kelas offline.",
+    source: "Contact Form",
+    status: "pending",
+    date: "2025-02-10T09:30:00Z",
+  },
+  {
+    id: "L002",
+    name: "Dewi Kartika",
+    email: "kartika@example.com",
+    phone: "085612345678",
+    message: "Apakah ada trial class untuk usia 4 tahun?",
+    source: "WhatsApp",
+    status: "done",
+    date: "2025-02-09T14:15:00Z",
+  },
+  {
+    id: "L003",
+    name: "Budi Santoso",
+    email: "budi.s@example.com",
+    phone: "082199887766",
+    message: "Mau tanya paket kelas online.",
+    source: "Landing Page Promo",
+    status: "pending",
+    date: "2025-02-08T16:00:00Z",
+  },
+];
