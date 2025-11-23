@@ -55,7 +55,7 @@ const data = {
       isActive: false,
       items: [
         { title: "Tentang Kami", url: "/admin/tentang-kami" },
-        { title: "Fasilitas", url: "/admin/fasilitas" },
+        // { title: "Fasilitas", url: "/admin/fasilitas" },
         { title: "Peluang Usaha", url: "/admin/peluang-usaha" },
       ],
     },
