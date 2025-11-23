@@ -6,6 +6,7 @@ export interface IUser extends Document {
   emailVerified?: Date | null;
   image?: string;
   password?: string;
+  role: "admin" | "tentor" | "user";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,6 +34,7 @@ const UserSchema = new Schema<IUser>(
     password: {
       type: String,
     },
+    role: { type: String, enum: ["admin", "tentor", "user"], default: "user" },
   },
   {
     timestamps: true,
