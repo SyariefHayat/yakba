@@ -1,19 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-import {
-  Briefcase,
-  Users,
-  Wallet,
-  Globe,
-  Plus,
-  Edit2,
-  Trash2,
-  Link as LinkIcon,
-  CheckCircle2,
-  XCircle,
-} from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
+import { Edit2, Trash2, UserPlus } from "lucide-react";
 
 import {
   Card,
@@ -24,310 +12,355 @@ import {
 } from "@/components/ui/card";
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
-type OpportunityType = "kemitraan" | "reseller" | "tentor" | "affiliate";
-
-type Opportunity = {
-  id: string;
+type Mitra = {
+  _id: string;
   name: string;
-  type: OpportunityType;
-  commission: string;
-  investment?: string;
-  description: string;
-  isActive: boolean;
-  targetArea?: string;
-  link?: string;
+  city: string;
+  phone: string;
+  address: string;
+  email?: string;
+  isActive?: boolean;
 };
 
-const initialOpportunities: Opportunity[] = [
-  {
-    id: "1",
-    name: "Kemitraan Yakba Learning Center",
-    type: "kemitraan",
-    commission: "Bagi hasil 40% - 60%",
-    investment: "Mulai dari 25 juta",
-    description:
-      "Program kemitraan untuk membuka cabang Yakba Learning Center di kota Anda.",
-    isActive: true,
-    targetArea: "Kota/Kabupaten di Jawa Timur",
-    link: "https://yakba-contoh.com/kemitraan",
-  },
-  {
-    id: "2",
-    name: "Reseller Produk Digital",
-    type: "reseller",
-    commission: "Komisi 25% per produk",
-    investment: "Tanpa biaya pendaftaran",
-    description:
-      "Jadilah reseller buku bergambar & worksheet Yakba secara online.",
-    isActive: true,
-    targetArea: "Seluruh Indonesia (online)",
-    link: "https://yakba-contoh.com/reseller",
-  },
-  {
-    id: "3",
-    name: "Tentor Freelancer",
-    type: "tentor",
-    commission: "Fee per jam mengajar",
-    investment: undefined,
-    description:
-      "Kesempatan menjadi tentor freelance untuk kelas online dan offline.",
-    isActive: false,
-    targetArea: "Domisili Surabaya & sekitarnya",
-  },
-];
-
 const Page = () => {
-  const [opportunities] = useState<Opportunity[]>(initialOpportunities);
+  const [mitras, setMitras] = useState<Mitra[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const fetchMitras = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch("/api/landing/mitra");
+        const json = await res.json();
+
+        if (!res.ok || !json.success) {
+          console.error(json);
+          alert(json.message || "Gagal mengambil data mitra");
+          return;
+        }
+
+        setMitras(json.data);
+      } catch (error) {
+        console.error("Error fetch /api/landing/mitra:", error);
+        alert("Terjadi kesalahan saat mengambil data mitra.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMitras();
+  }, []);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setName("");
+    setCity("");
+    setPhone("");
+    setAddress("");
+    setEmail("");
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!name.trim() || !city.trim() || !phone.trim() || !address.trim()) {
+      alert("Nama, kota, telepon, dan alamat wajib diisi.");
+      return;
+    }
+
+    try {
+      setSubmitLoading(true);
+
+      if (!editingId) {
+        const res = await fetch("/api/landing/mitra", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            city,
+            phone,
+            address,
+            email,
+          }),
+        });
+
+        const json = await res.json();
+
+        if (!res.ok || !json.success) {
+          console.error(json);
+          alert(json.message || "Gagal menambahkan mitra");
+          return;
+        }
+
+        setMitras((prev) => [json.data, ...prev]);
+      } else {
+        const res = await fetch(`/api/landing/mitra/${editingId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            city,
+            phone,
+            address,
+            email,
+          }),
+        });
+
+        const json = await res.json();
+
+        if (!res.ok || !json.success) {
+          console.error(json);
+          alert(json.message || "Gagal mengupdate mitra");
+          return;
+        }
+
+        const updated: Mitra = json.data;
+
+        setMitras((prev) =>
+          prev.map((item) => (item._id === updated._id ? updated : item))
+        );
+      }
+
+      resetForm();
+    } catch (error) {
+      console.error("Error submit mitra:", error);
+      alert("Terjadi kesalahan saat menyimpan data mitra.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
+  const handleEdit = (item: Mitra) => {
+    setEditingId(item._id);
+    setName(item.name);
+    setCity(item.city);
+    setPhone(item.phone);
+    setAddress(item.address);
+    setEmail(item.email || "");
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus data mitra ini?")) return;
+
+    try {
+      const res = await fetch(`/api/landing/mitra/${id}`, {
+        method: "DELETE",
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        console.error(json);
+        alert(json.message || "Gagal menghapus mitra");
+        return;
+      }
+
+      setMitras((prev) => prev.filter((item) => item._id !== id));
+      if (editingId === id) resetForm();
+    } catch (error) {
+      console.error("Error delete mitra:", error);
+      alert("Terjadi kesalahan saat menghapus data mitra.");
+    }
+  };
 
   return (
     <div className="p-4 flex flex-col gap-6">
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Briefcase className="w-6 h-6 text-primary" />
-            Peluang Usaha
-          </h1>
-          <p className="text-muted-foreground">
-            Kelola informasi peluang kemitraan, reseller, affiliate, dan tentor.
-          </p>
-        </div>
-        <Button className="mt-2 sm:mt-0 flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          Tambah Peluang
-        </Button>
-      </div>
-
       <Card>
-        <CardHeader>
-          <CardTitle>Tambah / Edit Peluang Usaha</CardTitle>
-          <CardDescription>
-            Isi detail peluang usaha yang akan ditampilkan di halaman website.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit}>
+          <CardHeader className="flex flex-row items-center justify-between gap-2">
             <div>
-              <label className="text-sm font-medium">Nama Program</label>
-              <Input placeholder="Contoh: Kemitraan Yakba Learning Center" />
+              <CardTitle className="flex items-center gap-2">
+                <UserPlus className="w-5 h-5 text-primary" />
+                {editingId ? "Edit Data Mitra" : "Tambah Mitra Baru"}
+              </CardTitle>
+              <CardDescription>
+                Lengkapi data mitra Yakba: nama, kota, kontak, dan alamat.
+              </CardDescription>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            {editingId && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={resetForm}
+              >
+                Batal Edit
+              </Button>
+            )}
+          </CardHeader>
+
+          <CardContent className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Tipe Peluang</label>
-                <Select defaultValue="kemitraan">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih tipe" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="kemitraan">
-                      Kemitraan / Franchise
-                    </SelectItem>
-                    <SelectItem value="reseller">Reseller Produk</SelectItem>
-                    <SelectItem value="affiliate">
-                      Affiliate / Referal
-                    </SelectItem>
-                    <SelectItem value="tentor">Tentor / Pengajar</SelectItem>
-                  </SelectContent>
-                </Select>
+                <label className="text-sm font-medium">Nama Mitra</label>
+                <Input
+                  placeholder="Contoh: Mitra Yakba Surabaya"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
 
-              <div className="flex items-center justify-between gap-2 pt-6">
-                <span className="text-sm">Status aktif</span>
-                <Switch defaultChecked />
+              <div>
+                <label className="text-sm font-medium">Kota</label>
+                <Input
+                  placeholder="Contoh: Surabaya"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Telepon</label>
+                <Input
+                  placeholder="Contoh: 0812-3456-7890"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
               </div>
             </div>
 
-            <div>
-              <label className="text-sm font-medium">Skema Komisi</label>
-              <Input placeholder="Contoh: Komisi 25% per transaksi" />
-            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium">Alamat</label>
+                <Input
+                  placeholder="Contoh: Jl. Raya Ahmad Yani No. 10"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
 
-            <div>
-              <label className="text-sm font-medium">
-                Minimal Investasi (opsional)
-              </label>
-              <Input placeholder="Contoh: Mulai dari 10 juta" />
-            </div>
-          </div>
+              <div>
+                <label className="text-sm font-medium">Email (opsional)</label>
+                <Input
+                  type="email"
+                  placeholder="Contoh: surabaya@yakba.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">
-                Area / Target Wilayah
-              </label>
-              <Input placeholder="Contoh: Seluruh Indonesia / Jawa Timur / Online" />
+              <div className="flex justify-end gap-2 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={resetForm}
+                  disabled={submitLoading}
+                >
+                  Reset
+                </Button>
+                <Button type="submit" disabled={submitLoading}>
+                  {submitLoading
+                    ? "Menyimpan..."
+                    : editingId
+                    ? "Update Data"
+                    : "Simpan Data"}
+                </Button>
+              </div>
             </div>
-
-            <div>
-              <label className="text-sm font-medium">
-                Link Info Detail (opsional)
-              </label>
-              <Input placeholder="Contoh: https://yakba.com/peluang-usaha" />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium">Deskripsi Program</label>
-              <Textarea
-                className="min-h-[120px]"
-                placeholder="Jelaskan secara singkat tentang peluang usaha ini, benefit, dan syarat utamanya..."
-              />
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline">Batal</Button>
-              <Button>Simpan Peluang</Button>
-            </div>
-          </div>
-        </CardContent>
+          </CardContent>
+        </form>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
-              Total Peluang Aktif
-            </CardTitle>
-            <CardDescription>Peluang yang saat ini dibuka</CardDescription>
-          </CardHeader>
-          <CardContent className="text-3xl font-bold">
-            {opportunities.filter((o) => o.isActive).length}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-primary" />
-              Tipe Kemitraan & Reseller
-            </CardTitle>
-            <CardDescription>Program yang menghasilkan komisi</CardDescription>
-          </CardHeader>
-          <CardContent className="text-3xl font-bold">
-            {
-              opportunities.filter((o) =>
-                ["kemitraan", "reseller", "affiliate"].includes(o.type)
-              ).length
-            }
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Globe className="w-4 h-4 text-primary" />
-              Skala Jangkauan
-            </CardTitle>
-            <CardDescription>Contoh target wilayah peluang</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-1 text-sm text-muted-foreground">
-            <p>• Kota / Kabupaten tertentu</p>
-            <p>• Online seluruh Indonesia</p>
-            <p>• Domisili tentor sekitar lokasi</p>
-          </CardContent>
-        </Card>
-      </div>
-
       <Card>
         <CardHeader>
-          <CardTitle>Daftar Peluang Usaha</CardTitle>
+          <CardTitle>Daftar Mitra Terdaftar</CardTitle>
           <CardDescription>
-            Semua peluang usaha yang tersedia untuk mitra, reseller, atau
-            tentor.
+            Data mitra yang sudah terdaftar dalam sistem. Gunakan aksi edit atau
+            hapus untuk mengelola data.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {opportunities.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col gap-2 rounded-lg border p-3 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-semibold">{item.name}</span>
 
-                  <Badge variant="outline" className="flex items-center gap-1">
-                    <Briefcase className="w-3 h-3" />
-                    {item.type === "kemitraan"
-                      ? "Kemitraan"
-                      : item.type === "reseller"
-                      ? "Reseller"
-                      : item.type === "affiliate"
-                      ? "Affiliate"
-                      : "Tentor"}
-                  </Badge>
+        <CardContent>
+          {isLoading ? (
+            <p className="text-sm text-muted-foreground">Memuat data...</p>
+          ) : (
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nama</TableHead>
+                    <TableHead>Kota</TableHead>
+                    <TableHead>Telepon</TableHead>
+                    <TableHead>Alamat</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead className="text-right">Aksi</TableHead>
+                  </TableRow>
+                </TableHeader>
 
-                  {item.isActive ? (
-                    <Badge className="flex items-center gap-1 bg-emerald-500 text-white hover:bg-emerald-500">
-                      <CheckCircle2 className="w-3 h-3" />
-                      Aktif
-                    </Badge>
+                <TableBody>
+                  {mitras.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={6}
+                        className="text-center text-sm text-muted-foreground"
+                      >
+                        Belum ada mitra terdaftar.
+                      </TableCell>
+                    </TableRow>
                   ) : (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1 text-muted-foreground"
-                    >
-                      <XCircle className="w-3 h-3" />
-                      Ditutup
-                    </Badge>
+                    mitras.map((item) => (
+                      <TableRow key={item._id}>
+                        <TableCell className="font-medium">
+                          {item.name}
+                        </TableCell>
+                        <TableCell>{item.city}</TableCell>
+                        <TableCell>{item.phone}</TableCell>
+                        <TableCell className="max-w-[260px]">
+                          <span className="line-clamp-2">{item.address}</span>
+                        </TableCell>
+                        <TableCell>{item.email || "-"}</TableCell>
+
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              type="button"
+                              onClick={() => handleEdit(item)}
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              type="button"
+                              onClick={() => handleDelete(item._id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
                   )}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                  {item.commission && <span>Komisi: {item.commission}</span>}
-                  {item.investment && (
-                    <span className="border-l pl-3">
-                      Investasi: {item.investment}
-                    </span>
-                  )}
-                </div>
-
-                {item.targetArea && (
-                  <p className="text-xs text-muted-foreground">
-                    Area: {item.targetArea}
-                  </p>
-                )}
-
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {item.description}
-                </p>
-
-                {item.link && (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                  >
-                    <LinkIcon className="w-3 h-3" />
-                    Lihat halaman informasi
-                  </a>
-                )}
-              </div>
-
-              <div className="flex gap-2 pt-2 sm:pt-0">
-                <Button variant="outline" size="icon">
-                  <Edit2 className="w-4 h-4" />
-                </Button>
-                <Button variant="destructive" size="icon">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
+                </TableBody>
+              </Table>
             </div>
-          ))}
+          )}
         </CardContent>
       </Card>
     </div>
