@@ -1,0 +1,55 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "image",
+      "attrs": {
+        "src": "https://res.cloudinary.com/dc7pnsvtu/image/upload/v1763983244/gvqsrqu1xbjoifkoyqd1.jpg",
+        "alt": "Anak-anak belajar di Yakba Learning Center",
+        "title": null
+      }
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Belajar Ceria di Yakba Learning Center"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "text",
+          "marks": [{ "type": "bold" }],
+          "text": "Tags: "
+        },
+        {
+          "type": "text",
+          "text": "pendidikan, anak, islami, kelas-online"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Yakba Learning Center adalah tempat belajar yang dirancang khusus untuk anak usia dini dengan pendekatan Islami, menyenangkan, dan penuh aktivitas interaktif."
+        }
+      ]
+    }
+  ]
+}

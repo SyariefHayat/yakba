@@ -13,12 +13,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+import { Toaster } from "@/components/ui/sonner";
 import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/modules/admin/app-sidebar";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
+      <Toaster />
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">

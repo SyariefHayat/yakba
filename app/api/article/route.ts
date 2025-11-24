@@ -23,18 +23,8 @@ export async function POST(req: Request) {
     await connectDB();
 
     const data = await req.json();
-    const {
-      title,
-      slug,
-      excerpt,
-      contentHtml,
-      thumbnailUrl,
-      category,
-      tags,
-      author,
-      isFeatured,
-      views,
-    } = data;
+    const { title, slug, excerpt, contentHtml, thumbnailUrl, tags, author } =
+      data;
 
     if (!title || !slug || !contentHtml) {
       return NextResponse.json(
@@ -49,11 +39,8 @@ export async function POST(req: Request) {
       excerpt,
       contentHtml,
       thumbnailUrl: thumbnailUrl || "",
-      category: category || "",
       tags: Array.isArray(tags) ? tags : [],
       author,
-      isFeatured,
-      views,
     });
 
     return NextResponse.json(article, { status: 201 });
