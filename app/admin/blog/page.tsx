@@ -80,7 +80,7 @@ const Page = () => {
 
     try {
       setIsDeleting(id);
-      const res = await fetch(`/api/articles/${id}`, {
+      const res = await fetch(`/api/article/${id}`, {
         method: "DELETE",
       });
 
