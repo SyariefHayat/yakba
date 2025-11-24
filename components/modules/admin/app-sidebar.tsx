@@ -66,7 +66,7 @@ const data = {
       items: [
         { title: "Semua Artikel", url: "/admin/blog" },
         { title: "Buat Artikel", url: "/admin/blog/new" },
-        { title: "Kategori", url: "/admin/blog/kategori" },
+        // { title: "Kategori", url: "/admin/blog/kategori" },
       ],
     },
     {
