@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
@@ -26,12 +26,13 @@ type Article = {
 const Page = () => {
   const params = useParams<{ id: string }>();
 
+  const router = useRouter();
+
   const [article, setArticle] = useState<Article | null>(null);
   const [contentHtml, setContentHtml] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Ambil artikel existing
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -43,7 +44,6 @@ const Page = () => {
         const data: Article = await res.json();
         setArticle(data);
 
-        // Susun ulang konten untuk editor
         const editorContent = `
           ${data.title ? `<h1>${data.title}</h1>` : ""}
           ${
@@ -85,7 +85,6 @@ const Page = () => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(contentHtml, "text/html");
 
-      // Ambil / update thumbnail dari <img> pertama
       const firstImg = doc.querySelector("img");
       const thumbnailUrl =
         firstImg?.getAttribute("src") || article.thumbnailUrl || "";
@@ -94,7 +93,6 @@ const Page = () => {
         firstImg.remove();
       }
 
-      // Ambil / update title dari <h1> pertama
       const firstH1 = doc.querySelector("h1");
       const title =
         firstH1?.textContent?.trim() || article.title || "Artikel Tanpa Judul";
@@ -103,8 +101,8 @@ const Page = () => {
         firstH1.remove();
       }
 
-      // Ambil / update tags dari paragraf yang mengandung "Tags:"
       let tags: string[] = article.tags || [];
+
       const paragraphs = Array.from(doc.querySelectorAll("p"));
       for (const p of paragraphs) {
         const text = p.textContent?.trim() || "";
@@ -134,11 +132,10 @@ const Page = () => {
         contentHtml: cleanedContentHtml || contentHtml,
         thumbnailUrl,
         tags,
-        // author tidak diubah saat edit (pakai author lama di backend saja)
       };
 
       const res = await fetch(`/api/article/${article._id}`, {
-        method: "PUT", // <--- beda dari create yg pakai POST
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -156,8 +153,7 @@ const Page = () => {
 
       toast.success("Artikel berhasil diupdate!");
 
-      // Optional: redirect balik ke list artikel
-      // router.push("/admin/articles");
+      router.push("/admin/blog");
     } catch (error) {
       console.error(error);
       toast.error("Terjadi kesalahan saat update artikel.", {
