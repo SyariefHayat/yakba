@@ -81,7 +81,7 @@ export const columns: ColumnDef<Program>[] = [
     ),
   },
   {
-    accessorKey: "shortDescription",
+    accessorKey: "description",
     header: "Deskripsi",
   },
   {
@@ -255,9 +255,9 @@ export default function DataTableDemo() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
