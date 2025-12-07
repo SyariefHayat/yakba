@@ -45,25 +45,30 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface ProgramFormProps {
   userId: string;
+  initialData?: any; // Using any for now to match strict IProgram vs form structure, or define a comprehensive type
 }
 
-export function ProgramForm({ userId }: ProgramFormProps) {
+export function ProgramForm({ userId, initialData }: ProgramFormProps) {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
+  const [name, setName] = useState(initialData?.name || "");
+  const [slug, setSlug] = useState(initialData?.slug || "");
   const [isLoading, setIsLoading] = useState(false);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
+    initialData?.thumbnailUrl || null
+  );
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setName(value);
-    setSlug(
-      value
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "")
-    );
+    if (!initialData) {
+      setSlug(
+        value
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "")
+      );
+    }
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,18 +87,25 @@ export function ProgramForm({ userId }: ProgramFormProps) {
     formData.append("createdBy", userId);
 
     try {
-      const res = await fetch("/api/program", {
-        method: "POST",
+      const url = initialData
+        ? `/api/program/${initialData._id}`
+        : "/api/program";
+      const method = initialData ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
         body: formData,
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Gagal membuat program");
+        throw new Error(data.message || "Gagal menyimpan program");
       }
 
-      toast.success("Program berhasil dibuat");
+      toast.success(
+        initialData ? "Program berhasil diperbarui" : "Program berhasil dibuat"
+      );
       router.push("/admin/program");
       router.refresh();
     } catch (error) {
@@ -112,7 +124,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
             <CardHeader>
               <CardTitle>Informasi Umum</CardTitle>
               <CardDescription>
-                Informasi dasar mengenai program yang akan dibuat.
+                Informasi dasar mengenai program yang akan {initialData ? "diperbarui" : "dibuat"}.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -155,6 +167,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                     placeholder="Jelaskan detail program, apa yang akan dipelajari, dan siapa target audiens..."
                     className="min-h-[150px] resize-y"
                     required
+                    defaultValue={initialData?.description}
                   />
                 </FieldContent>
               </Field>
@@ -172,7 +185,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
               <Field>
                 <FieldLabel>Tipe Pembelajaran</FieldLabel>
                 <FieldContent>
-                  <Select name="type" defaultValue="offline">
+                  <Select name="type" defaultValue={initialData?.type || "offline"}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <Monitor className="h-4 w-4 text-muted-foreground" />
@@ -193,7 +206,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
               <Field>
                 <FieldLabel>Level Kesulitan</FieldLabel>
                 <FieldContent>
-                  <Select name="level" defaultValue="beginner">
+                  <Select name="level" defaultValue={initialData?.level || "beginner"}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
@@ -221,6 +234,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                           type="number"
                           placeholder="Min"
                           min={0}
+                          defaultValue={initialData?.ageMin}
                         />
                         <span className="absolute right-3 top-2.5 text-xs text-muted-foreground">
                           Tahun
@@ -237,6 +251,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                           type="number"
                           placeholder="Max"
                           min={0}
+                          defaultValue={initialData?.ageMax}
                         />
                         <span className="absolute right-3 top-2.5 text-xs text-muted-foreground">
                           Tahun
@@ -267,6 +282,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                       type="number"
                       placeholder="0"
                       className="pl-9"
+                      defaultValue={initialData?.price}
                     />
                   </div>
                 </FieldContent>
@@ -282,6 +298,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                       type="number"
                       placeholder="0"
                       className="pl-9"
+                      defaultValue={initialData?.discountPrice}
                     />
                   </div>
                 </FieldContent>
@@ -290,7 +307,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
               <Field>
                 <FieldLabel>Periode Tagihan</FieldLabel>
                 <FieldContent>
-                  <Select name="billingPeriod" defaultValue="once">
+                  <Select name="billingPeriod" defaultValue={initialData?.billingPeriod || "once"}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -324,7 +341,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
                     Tampilkan program ini.
                   </p>
                 </div>
-                <Switch name="isActive" value="true" defaultChecked />
+                <Switch name="isActive" value="true" defaultChecked={initialData?.isActive ?? true} />
               </div>
             </CardContent>
           </Card>
@@ -383,7 +400,7 @@ export function ProgramForm({ userId }: ProgramFormProps) {
               ) : (
                 <>
                   <Save className="mr-2 h-4 w-4" />
-                  Simpan Program
+                  {initialData ? "Simpan Perubahan" : "Simpan Program"}
                 </>
               )}
             </Button>

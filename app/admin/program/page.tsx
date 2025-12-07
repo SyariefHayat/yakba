@@ -50,7 +50,7 @@ import { TableSkeleton } from "@/components/modules/admin/program/TableSkeleton"
 export type ProgramType = "online" | "offline" | "hybrid";
 
 export type Program = {
-  id: string;
+  _id: string;
   name: string;
   slug: string;
   type: ProgramType;
@@ -121,14 +121,19 @@ export const columns: ColumnDef<Program>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(program.id)}
+              onClick={() => navigator.clipboard.writeText(program._id)}
               className="cursor-pointer"
             >
               Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              Edit Program
+            <DropdownMenuItem asChild>
+              <a
+                href={`/admin/program/${program._id}/edit`}
+                className="cursor-pointer"
+              >
+                Edit Program
+              </a>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               Lihat Detail

@@ -7,14 +7,14 @@ import cloudinary, { extractPublicIdFromUrl } from "@/lib/cloudinary";
 
 export async function PUT(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     let bannerUrl = "";
     let newPublicId = "";
 
     try {
         await connectDB();
-        const { id } = params;
+        const { id } = await params;
 
         const formData = await req.formData();
 
