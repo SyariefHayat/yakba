@@ -74,8 +74,9 @@ const data = {
       url: "#",
       icon: GraduationCap,
       items: [
-        { title: "Program Offline", url: "/admin/program/offline" },
-        { title: "Program Online", url: "/admin/program/online" },
+        { title: "Semua Program", url: "/admin/program" },
+        // { title: "Program Offline", url: "/admin/program/offline" },
+        // { title: "Program Online", url: "/admin/program/online" },
         { title: "Jadwal Kelas", url: "/admin/program/jadwal" },
         { title: "Pendaftar", url: "/admin/program/pendaftar" },
       ],
