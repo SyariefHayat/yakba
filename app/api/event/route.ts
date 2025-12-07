@@ -5,6 +5,21 @@ import connectDB from "@/lib/mongodb";
 import EventPromotion from "@/models/EventPromotion";
 import cloudinary from "@/lib/cloudinary";
 
+export async function GET() {
+  try {
+    await connectDB();
+
+    const events = await EventPromotion.find().sort({ createdAt: -1 });
+    return NextResponse.json(events, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return NextResponse.json(
+      { message: "Gagal mengambil daftar event/promosi" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: Request) {
   let imageUrl = "";
   let publicId = "";
