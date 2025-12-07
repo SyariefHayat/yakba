@@ -67,84 +67,6 @@ export type Program = {
   createdAt?: string;
 };
 
-export const columns: ColumnDef<Program>[] = [
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Nama
-        <ArrowUpDown />
-      </Button>
-    ),
-  },
-  {
-    accessorKey: "description",
-    header: "Deskripsi",
-  },
-  {
-    accessorKey: "type",
-    header: "Tipe",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("type")}</div>,
-  },
-  {
-    accessorKey: "billingPeriod",
-    header: "Billing",
-  },
-  {
-    accessorKey: "price",
-    header: "Harga",
-    cell: ({ row }) => {
-      const price = row.getValue("price") as number;
-      return <div>Rp {price.toLocaleString("id-ID")}</div>;
-    },
-  },
-  {
-    accessorKey: "level",
-    header: "Level",
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const program = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(program._id)}
-              className="cursor-pointer"
-            >
-              Copy ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <a
-                href={`/admin/program/${program._id}/edit`}
-                className="cursor-pointer"
-              >
-                Edit Program
-              </a>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              Lihat Detail
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export default function DataTableDemo() {
   const [program, setProgram] = React.useState<Program[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -179,6 +101,113 @@ export default function DataTableDemo() {
 
     getProgramData();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus program ini?")) return;
+
+    try {
+      const res = await fetch(`/api/program/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Gagal menghapus program");
+
+      setProgram((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Program berhasil dihapus");
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal menghapus program");
+    }
+  };
+
+  const columns = React.useMemo<ColumnDef<Program>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Nama
+            <ArrowUpDown />
+          </Button>
+        ),
+      },
+      {
+        accessorKey: "description",
+        header: "Deskripsi",
+      },
+      {
+        accessorKey: "type",
+        header: "Tipe",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("type")}</div>
+        ),
+      },
+      {
+        accessorKey: "billingPeriod",
+        header: "Billing",
+      },
+      {
+        accessorKey: "price",
+        header: "Harga",
+        cell: ({ row }) => {
+          const price = row.getValue("price") as number;
+          return <div>Rp {price.toLocaleString("id-ID")}</div>;
+        },
+      },
+      {
+        accessorKey: "level",
+        header: "Level",
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+          const program = row.original;
+
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => navigator.clipboard.writeText(program._id)}
+                  className="cursor-pointer"
+                >
+                  Copy ID
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <a
+                    href={`/admin/program/${program._id}/edit`}
+                    className="cursor-pointer"
+                  >
+                    Edit Program
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  Lihat Detail
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer text-red-600 focus:text-red-600"
+                  onClick={() => handleDelete(program._id)}
+                >
+                  Hapus
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ],
+    []
+  );
 
   const table = useReactTable({
     data: program,

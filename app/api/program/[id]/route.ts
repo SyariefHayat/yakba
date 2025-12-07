@@ -123,6 +123,52 @@ export async function PUT(
             }
         }
 
+
+        return NextResponse.json(
+            { message: "Internal Server Error" },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(
+    req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        await connectDB();
+        const { id } = await params;
+
+        const program = await Program.findById(id);
+
+        if (!program) {
+            return NextResponse.json(
+                { message: "Program tidak ditemukan" },
+                { status: 404 }
+            );
+        }
+
+        // Delete image from Cloudinary if it exists
+        if (program.thumbnailUrl) {
+            const publicId = extractPublicIdFromUrl(program.thumbnailUrl);
+            if (publicId) {
+                try {
+                    await cloudinary.uploader.destroy(publicId);
+                    console.log(`Deleted image: ${publicId}`);
+                } catch (error) {
+                    console.error(`Failed to delete image ${publicId}:`, error);
+                }
+            }
+        }
+
+        await Program.findByIdAndDelete(id);
+
+        return NextResponse.json(
+            { message: "Program berhasil dihapus" },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error deleting program:", error);
         return NextResponse.json(
             { message: "Internal Server Error" },
             { status: 500 }
