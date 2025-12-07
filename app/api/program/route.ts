@@ -22,6 +22,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  let bannerUrl = "";
+  let publicId = "";
+
   try {
     await connectDB();
 
@@ -48,8 +51,6 @@ export async function POST(req: Request) {
       );
     }
 
-    let bannerUrl = "";
-
     if (thumbnailUrl) {
       const arrayBuffer = await thumbnailUrl.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -72,6 +73,7 @@ export async function POST(req: Request) {
       );
 
       bannerUrl = uploadResult.secure_url;
+      publicId = uploadResult.public_id;
     }
 
     const program = await Program.create({
@@ -92,7 +94,18 @@ export async function POST(req: Request) {
 
     return NextResponse.json(program, { status: 201 });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error during program creation:", error);
+
+    // Rollback: Delete image from Cloudinary if it was uploaded but database creation failed
+    if (publicId) {
+      try {
+        await cloudinary.uploader.destroy(publicId);
+        console.log(`Rollback: Deleted image ${publicId} from Cloudinary due to creation failure.`);
+      } catch (deleteError) {
+        console.error(`Rollback failed: Could not delete image ${publicId} from Cloudinary.`, deleteError);
+      }
+    }
+
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

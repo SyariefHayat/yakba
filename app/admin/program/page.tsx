@@ -211,9 +211,11 @@ export default function DataTableDemo() {
           className="max-w-sm"
         />
         <div className="flex sm:gap-5 sm:mt-0 gap-3 mt-3">
-          <Button variant="outline" className="ml-auto">
-            <Plus /> Tambah Program
-          </Button>
+          <a href="/admin/program/new">
+            <Button variant="outline" className="ml-auto cursor-pointer">
+              <Plus /> Tambah Program
+            </Button>
+          </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
