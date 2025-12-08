@@ -130,7 +130,7 @@ const data = {
       icon: ImageIcon,
       items: [
         { title: "Semua Media", url: "/admin/media" },
-        { title: "Upload Baru", url: "/admin/media/upload" },
+        // { title: "Upload Baru", url: "/admin/media/upload" },
       ],
     },
   ],
