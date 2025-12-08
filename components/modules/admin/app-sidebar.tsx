@@ -89,7 +89,7 @@ const data = {
       items: [
         { title: "Semua Event", url: "/admin/event" },
         { title: "Tambah Event", url: "/admin/event/new" },
-        { title: "Promo", url: "/admin/event/promo" },
+        // { title: "Promo", url: "/admin/event/promo" },
       ],
     },
     {
