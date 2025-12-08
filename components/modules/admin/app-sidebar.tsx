@@ -110,8 +110,9 @@ const data = {
       icon: Briefcase,
       isActive: false,
       items: [
-        { title: "List Lowongan", url: "/admin/karir" },
-        { title: "Pelamar", url: "/admin/karir/pelamar" },
+        { title: "List Lowongan", url: "/admin/lowongan" },
+        { title: "Tambah Lowongan", url: "/admin/lowongan/new" },
+        // { title: "Pelamar", url: "/admin/lowongan/pelamar" },
       ],
     },
     {
