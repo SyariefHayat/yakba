@@ -1,8 +1,8 @@
 "use client";
 
 import { toast } from "sonner";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Loader2,
@@ -51,6 +51,8 @@ interface EventFormProps {
 
 export function EventForm({ userId, initialData }: EventFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const typeParam = searchParams.get("type");
 
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
@@ -109,7 +111,14 @@ export function EventForm({ userId, initialData }: EventFormProps) {
           ? "Event/Promosi berhasil diperbarui"
           : "Event/Promosi berhasil dibuat"
       );
-      router.push("/admin/event");
+
+      // Smart redirect
+      const savedType = formData.get("type");
+      if (savedType === "promotion") {
+        router.push("/admin/event/promo");
+      } else {
+        router.push("/admin/event");
+      }
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -165,7 +174,7 @@ export function EventForm({ userId, initialData }: EventFormProps) {
               <Field>
                 <FieldLabel>Tipe</FieldLabel>
                 <FieldContent>
-                  <Select name="type" defaultValue={initialData?.type || "event"}>
+                  <Select name="type" defaultValue={initialData?.type || typeParam || "event"}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <Megaphone className="h-4 w-4 text-muted-foreground" />
