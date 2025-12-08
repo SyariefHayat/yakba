@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Schema, Model, Types } from "mongoose";
 
 export interface IProduct {
     _id?: Types.ObjectId;
@@ -28,6 +28,42 @@ export interface IProduct {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+const ProductSchema = new Schema<IProduct>(
+    {
+        name: { type: String, required: true },
+        slug: { type: String, required: true, unique: true },
+        description: { type: String },
+        price: { type: Number, required: true },
+        compareAtPrice: { type: Number },
+        costPerItem: { type: Number },
+        stock: { type: Number, required: true, default: 0 },
+        sku: { type: String, required: true, unique: true },
+        images: { type: [String], default: [] },
+        category: { type: String },
+        tags: { type: [String], default: [] },
+        status: {
+            type: String,
+            enum: ["active", "draft", "archived"],
+            default: "draft",
+        },
+        fileUrl: { type: String },
+        fileType: { type: String },
+        fileSize: { type: Number },
+        deliveryMethod: {
+            type: String,
+            enum: ["automatic", "manual"],
+            default: "automatic",
+        },
+        attributes: [
+            {
+                name: { type: String, required: true },
+                value: { type: String, required: true },
+            },
+        ],
+    },
+    { timestamps: true }
+);
 
 export const ProductValidationSchema = {
     $jsonSchema: {
@@ -130,3 +166,7 @@ export const ProductValidationSchema = {
         },
     },
 };
+
+const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
+
+export default Product;
