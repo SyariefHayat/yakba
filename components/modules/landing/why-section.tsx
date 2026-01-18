@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 // Type untuk posisi image
 type ImagePosition = "left" | "right"
@@ -35,14 +36,18 @@ const WHY_ITEMS: WhyItem[] = [
 
 const WhySection = () => {
     return (
-        <section className="relative w-full min-h-screen bg-[url('/bg.png')] bg-cover lg:mt-20 py-10 md:pb-30 z-20">
+        <section className="relative w-full min-h-screen bg-[url('/bg.png')] bg-cover lg:mt-20 py-10 md:pb-30 z-20 overflow-hidden">
             {/* Section Title */}
-            <h2 className="text-3xl md:text-6xl font-mochi-boom text-white text-center px-4">
+            <h2 className="relative z-20 text-3xl md:text-6xl font-mochi-boom text-white text-center px-4">
                 Kenapa Memilih Kami ?
             </h2>
 
+            <div className="hidden md:block md:w-[1120px] lg:w-[1160px] absolute md:top-15 lg:top-10 -right-20 z-10">
+                <img src="/why-line.svg" alt="Why Line" className="w-full" />
+            </div>
+
             {/* Why Items Container */}
-            <div className="w-[80%] flex flex-col gap-14 mx-auto md:gap-30 mt-14 px-4 md:px-0">
+            <div className="w-[80%] relative z-20 flex flex-col gap-14 mx-auto md:gap-30 mt-14 px-4 md:px-0">
                 {WHY_ITEMS.map((item, index) => (
                     <WhyCard key={index} {...item} />
                 ))}

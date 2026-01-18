@@ -53,20 +53,18 @@ const SIZE_CLASSES: Record<GallerySize, string> = {
 
 const GallerySection = () => {
     return (
-        <section className="w-full min-h-screen bg-[url('/gallery-bg.png')] bg-cover py-20 md:py-40 pb-30 md:pb-50 md:mb-10 px-4 md:px-0">
+        <section className="relative w-full min-h-screen bg-[url('/gallery-bg.png')] bg-cover py-20 md:py-40 pb-30 md:pb-50 md:mb-10 px-4 md:px-0 overflow-hidden">
             {/* Section Title */}
             <h2 className="text-3xl md:text-6xl font-mochi-boom text-white text-center">
                 Galeri Aktivitas Kami
             </h2>
 
+            <div className="hidden md:block md:rotate-50 lg:rotate-0 absolute w-[1450px] md:top-170 md:-left-70 lg:top-80 lg:-left-10 z-10">
+                <img src="/gallery-line.svg" alt="Gallery Line" className="w-full" />
+            </div>
+
             {/* Gallery Grid */}
-            <div className="
-                w-full md:w-[80%] 
-                grid grid-cols-2 lg:flex lg:flex-row 
-                items-center justify-between 
-                gap-4 md:gap-10 
-                mx-auto mt-8 md:mt-14
-            ">
+            <div className="relative z-20 w-full md:w-[80%] grid grid-cols-2 lg:flex lg:flex-row items-center justify-between gap-4 md:gap-10 mx-auto mt-8 md:mt-14">
                 {GALLERY_COLUMNS.map((column, columnIndex) => (
                     <GalleryColumnComponent key={columnIndex} {...column} />
                 ))}

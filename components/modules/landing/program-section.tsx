@@ -73,7 +73,7 @@ const ProgramCard = ({ title, description, image, bgColor, headerBgColor }: Prog
             </div>
 
             {/* Content */}
-            <div className="p-4 md:pb-10 md:px-5 lg:p-5 text-center md:text-left">
+            <div className="p-4 pb-5 md:pb-12 md:px-5 text-center md:text-left">
                 <h3 className="font-mochi-boom text-xl md:text-2xl lg:text-3xl text-white">
                     {title}
                 </h3>
