@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
+
 import { Button } from "@/components/ui/button"
 
 import {
@@ -48,10 +51,74 @@ const MENU_ITEMS = [
 
 const HeroSection = () => {
     const pathname = usePathname()
+    const logoRef = useRef<HTMLImageElement>(null)
+    const sheetTriggerRef = useRef<HTMLButtonElement>(null)
+    const heroContentRef = useRef<HTMLDivElement>(null)
+    const cloudLeftRef = useRef<HTMLImageElement>(null)
+    const cloudRightRef = useRef<HTMLImageElement>(null)
+
+    useEffect(() => {
+        // Animasi dari atas
+        const elementsFromTop = [
+            { ref: logoRef.current, delay: 0.2 },
+            { ref: sheetTriggerRef.current, delay: 0.2 },
+            { ref: heroContentRef.current, delay: 0.4 }
+        ]
+
+        elementsFromTop.forEach(({ ref, delay }) => {
+            if (ref) {
+                gsap.set(ref, {
+                    y: -100,
+                    opacity: 0
+                })
+
+                gsap.to(ref, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    delay
+                })
+            }
+        })
+
+        // Animasi cloud dari kiri
+        if (cloudLeftRef.current) {
+            gsap.set(cloudLeftRef.current, {
+                x: -200,
+                opacity: 0
+            })
+
+            gsap.to(cloudLeftRef.current, {
+                x: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power3.out",
+                delay: 0.4
+            })
+        }
+
+        // Animasi cloud dari kanan
+        if (cloudRightRef.current) {
+            gsap.set(cloudRightRef.current, {
+                x: 200,
+                opacity: 0
+            })
+
+            gsap.to(cloudRightRef.current, {
+                x: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power3.out",
+                delay: 0.4
+            })
+        }
+    }, [])
 
     return (
-        <section className="relative w-full h-[60vh] md:h-[70vh] lg:h-screen bg-sky-100">
+        <section className="relative w-full h-[60vh] md:h-[70vh] lg:h-screen bg-sky-100 overflow-hidden">
             <Image
+                ref={logoRef}
                 src="/logo.png"
                 alt="logo"
                 width={100}
@@ -62,7 +129,10 @@ const HeroSection = () => {
             {/* Sidebar Sheet */}
             <Sheet>
                 <SheetTrigger asChild>
-                    <button className="w-[30px] h-[40px] absolute top-8.5 md:top-10 right-0 bg-yellow-300 rounded-s-md flex items-center justify-center z-40 cursor-pointer hover:bg-yellow-400 transition-colors">
+                    <button
+                        ref={sheetTriggerRef}
+                        className="w-[30px] h-[40px] absolute top-8.5 md:top-10 right-0 bg-yellow-300 rounded-s-md flex items-center justify-center z-40 cursor-pointer hover:bg-yellow-400 transition-colors"
+                    >
                         <ChevronLeft className="size-7" />
                     </button>
                 </SheetTrigger>
@@ -115,7 +185,10 @@ const HeroSection = () => {
             </Sheet>
 
             {/* Hero Content */}
-            <div className="absolute top-[41%] md:top-[35%] lg:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30">
+            <div
+                ref={heroContentRef}
+                className="absolute top-[41%] md:top-[35%] lg:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
+            >
                 <p className="md:mb-4">Taman Kanak-Kanak Islami</p>
 
                 {/* Title YAKBA KINDERGARTEN */}
@@ -136,13 +209,14 @@ const HeroSection = () => {
                 </p>
 
                 {/* CTA Button */}
-                <Button className="mt-3 text-xs md:text-base md:py-5 bg-yellow-300 text-black font-poppins hover:bg-yellow-400 cursor-pointer">
+                <Button className="text-xs font-bold md:text-base md:py-5 bg-yellow-300 text-black font-poppins hover:bg-yellow-400 cursor-pointer">
                     Mulai Sekarang
                 </Button>
             </div>
 
             {/* Cloud Assets */}
             <Image
+                ref={cloudLeftRef}
                 src="/cloud-left.png"
                 alt="Cloud decoration left"
                 width={0}
@@ -151,6 +225,7 @@ const HeroSection = () => {
                 className="absolute bottom-16 md:bottom-35 lg:bottom-15 left-0 w-1/2 h-auto z-10"
             />
             <Image
+                ref={cloudRightRef}
                 src="/cloud-right.png"
                 alt="Cloud decoration right"
                 width={0}

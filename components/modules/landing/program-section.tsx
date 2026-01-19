@@ -1,5 +1,12 @@
+"use client"
+
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { useEffect, useRef } from "react"
+
+gsap.registerPlugin(ScrollTrigger)
 
 // Interface untuk data program
 interface ProgramItem {
@@ -8,6 +15,11 @@ interface ProgramItem {
     image: string
     bgColor: string      // Warna background card
     headerBgColor: string // Warna background header/image area
+}
+
+// Interface untuk props ProgramCard dengan index
+interface ProgramCardProps extends ProgramItem {
+    index: number
 }
 
 // Data program unggulan
@@ -36,17 +48,42 @@ const PROGRAMS: ProgramItem[] = [
 ]
 
 const ProgramSection = () => {
+    const titleRef = useRef<HTMLHeadingElement>(null)
+
+    useEffect(() => {
+        // Animasi untuk title
+        if (titleRef.current) {
+            gsap.set(titleRef.current, {
+                y: 100,
+                opacity: 0,
+            })
+
+            gsap.to(titleRef.current, {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: titleRef.current,
+                    start: "top 90%",
+                    end: "top 20%",
+                    toggleActions: "play none none reverse"
+                }
+            })
+        }
+    }, [])
+
     return (
-        <section className="w-full min-h-screen py-10 mb-10 px-4 md:px-0">
+        <section className="w-full min-h-screen py-10 mb-10 px-4 md:px-0 overflow-hidden">
             {/* Section Title */}
-            <h2 className="text-3xl md:text-6xl font-mochi-boom text-[#1B83C8] text-center">
+            <h2 ref={titleRef} className="text-3xl md:text-6xl font-mochi-boom text-[#1B83C8] text-center">
                 Program Unggulan Kami
             </h2>
 
             {/* Program Cards Container */}
             <div className="w-[70%] md:w-[80%] flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 items-center justify-between gap-6 md:gap-10 mx-auto mt-10 md:mt-14">
                 {PROGRAMS.map((program, index) => (
-                    <ProgramCard key={index} {...program} />
+                    <ProgramCard key={index} {...program} index={index} />
                 ))}
             </div>
         </section>
@@ -54,9 +91,37 @@ const ProgramSection = () => {
 }
 
 // Komponen untuk setiap program card
-const ProgramCard = ({ title, description, image, bgColor, headerBgColor }: ProgramItem) => {
+const ProgramCard = ({ title, description, image, bgColor, headerBgColor, index }: ProgramCardProps) => {
+    const cardRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (cardRef.current) {
+            // Set initial state - card tersembunyi di kanan
+            gsap.set(cardRef.current, {
+                x: 150,
+                opacity: 0
+            })
+
+            // Animate dengan delay berdasarkan index (stagger effect)
+            gsap.to(cardRef.current, {
+                x: 0,
+                opacity: 1,
+                duration: 1,
+                delay: index * 0.2, // Delay bergantian: 0s, 0.2s, 0.4s
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: cardRef.current,
+                    start: "top 85%",
+                    end: "top 20%",
+                    toggleActions: "play none none reverse"
+                }
+            })
+        }
+    }, [index])
+
     return (
         <div
+            ref={cardRef}
             className="w-full md:w-auto md:flex-1 flex flex-col items-center md:gap-5 rounded-md"
             style={{ backgroundColor: bgColor }}
         >

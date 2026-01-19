@@ -126,10 +126,11 @@ const FooterColumn = ({ title, links, isSocialMedia = false }: FooterColumn) => 
                             <Image
                                 src={link.icon || ""}
                                 alt={link.label}
-                                width={40}
-                                height={40}
-                                className="w-8 h-8 md:w-10 md:h-10"
+                                width={100}
+                                height={100}
+                                className={`${link.label == "YouTube" ? "w-8 h-7 mt-[3px] md:w-10 md:h-8 md:mt-1.5" : "w-8 h-8 md:w-10 md:h-10"}`}
                             />
+
                         </Link>
                     ))}
                 </div>

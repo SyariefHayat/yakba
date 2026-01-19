@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ArrowDown } from "lucide-react"
 import Image from "next/image"
 
 // Konstanta warna brand (sama dengan hero-section)
@@ -37,8 +38,8 @@ const CtaSection = () => {
                     </p>
 
                     {/* CTA Button */}
-                    <Button className="mt-3 bg-yellow-300 text-black font-poppins hover:bg-yellow-400 cursor-pointer">
-                        Mulai Sekarang
+                    <Button className="mt-3 bg-yellow-300 text-black text-xs font-bold font-poppins hover:bg-yellow-400 cursor-pointer">
+                        Mulai Sekarang <ArrowDown className="text-red-500" />
                     </Button>
                 </div>
 
