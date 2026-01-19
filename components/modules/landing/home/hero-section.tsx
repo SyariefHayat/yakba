@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import gsap from "gsap"
+import { useEffect, useRef } from "react"
 
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import Navbar from "@/components/modules/landing/shared/navbar"
+import { Button } from "@/components/ui/button"
 import { COLORS, YAKBA_LETTERS } from "@/lib/constants"
+import Navbar from "@/components/modules/landing/shared/navbar"
 
 const HeroSection = () => {
     const heroContentRef = useRef<HTMLDivElement>(null)
@@ -64,18 +64,18 @@ const HeroSection = () => {
     }, [])
 
     return (
-        <section className="relative w-full h-[60vh] md:h-[70vh] lg:h-screen bg-sky-100 overflow-hidden">
+        <section className="relative w-full h-[65vh] md:h-[70vh] lg:h-screen bg-sky-100 overflow-hidden">
             <Navbar />
 
             {/* Hero Content */}
             <div
                 ref={heroContentRef}
-                className="absolute top-[41%] md:top-[35%] lg:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
+                className="absolute top-[41%] md:top-[35%] lg:top-[33%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
             >
-                <p className="md:mb-4">Taman Kanak-Kanak Islami</p>
 
                 {/* Title YAKBA KINDERGARTEN */}
-                <h1 className="text-4xl md:text-7xl" style={{ color: COLORS.navy }}>
+                <h1 className="font-bold text-[clamp(2.25rem,6vw,5rem)]"
+                    style={{ color: COLORS.navy }}>
                     {YAKBA_LETTERS.map(({ letter, color }, index) => (
                         <span key={index} style={{ color }}>
                             {letter}
@@ -123,7 +123,7 @@ const HeroSection = () => {
                 alt="Yakba mascot"
                 width={500}
                 height={500}
-                className="absolute bottom-5 md:bottom-10 lg:bottom-0 left-1/2 -translate-x-1/2 z-30 w-[300px] md:w-[600px] lg:w-[500px] h-auto"
+                className="absolute bottom-0 md:bottom-10 lg:bottom-0 left-1/2 -translate-x-1/2 z-30 w-[300px] md:w-[600px] lg:w-[500px] h-auto"
             />
 
             {/* Land/Ground */}

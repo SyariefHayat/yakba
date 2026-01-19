@@ -1,5 +1,9 @@
+"use client"
+
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
 import { Button } from "@/components/ui/button"
-import { ArrowDown } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import Image from "next/image"
 import { COLORS } from "@/lib/constants"
 
@@ -10,10 +14,31 @@ const CTA_WORDS = [
     { text: "ANAK", color: COLORS.blue },
 ] as const
 
+// Arrow colors matching brand
+const ARROW_COLORS = [COLORS.green, COLORS.pink, COLORS.blue]
+
 const CtaSection = () => {
+    const arrowsRef = useRef<(HTMLDivElement | null)[]>([])
+
+    useEffect(() => {
+        // Staggered bounce animation untuk setiap arrow
+        arrowsRef.current.forEach((arrow, index) => {
+            if (arrow) {
+                gsap.to(arrow, {
+                    y: 8,
+                    duration: 0.4,
+                    ease: "power1.inOut",
+                    yoyo: true,
+                    repeat: -1,
+                    delay: index * 0.15, // Stagger effect
+                })
+            }
+        })
+    }, [])
+
     return (
         <section className="w-full my-10 md:my-20">
-            <div className="relative w-[90%] h-50 md:h-70 lg:h-100 bg-sky-100 mx-auto rounded-xl overflow-hidden">
+            <div className="relative w-[90%] h-60 md:h-80 lg:h-100 bg-sky-100 mx-auto rounded-xl overflow-hidden">
                 {/* CTA Content */}
                 <div className="absolute w-[90%] md:w-[70%] lg:w-1/2 left-5 md:left-25 lg:left-70 top-5 md:top-15 lg:top-20 text-center z-30">
                     {/* Title */}
@@ -31,9 +56,25 @@ const CtaSection = () => {
                         Daftarkan Anak Anda Sekarang dan Mulai Perjalanan Belajarnya Bersama YAKBA!
                     </p>
 
+                    {/* Animated Arrows - Triple colorful arrows */}
+                    <div className="flex justify-center items-center gap-1 my-2">
+                        {ARROW_COLORS.map((color, index) => (
+                            <div
+                                key={index}
+                                ref={(el) => { arrowsRef.current[index] = el }}
+                            >
+                                <ChevronDown
+                                    className="size-6 md:size-8 drop-shadow-md"
+                                    style={{ color }}
+                                    strokeWidth={3}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
                     {/* CTA Button */}
-                    <Button className="mt-3 bg-yellow-300 text-black text-xs font-bold font-poppins hover:bg-yellow-400 cursor-pointer">
-                        Mulai Sekarang <ArrowDown className="text-red-500" />
+                    <Button className=" bg-yellow-300 text-black text-xs md:text-base font-bold font-poppins hover:bg-yellow-400 cursor-pointer shadow-lg">
+                        Mulai Sekarang
                     </Button>
                 </div>
 

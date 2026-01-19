@@ -273,7 +273,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
 
                 {/* Discount Badge */}
                 {event.discount && (
-                    <span className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-300 text-black text-sm font-mochi-boom">
+                    <span className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-300 text-black text-sm font-poppins font-bold">
                         <Tag className="size-4" />
                         {event.discount}
                     </span>
@@ -293,7 +293,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
             {/* Content */}
             <div className="p-5 md:p-6">
                 {/* Title */}
-                <h3 className="font-mochi-boom text-lg md:text-xl text-[#1F3B5A] mb-2 group-hover:text-[#1B83C8] transition-colors line-clamp-2">
+                <h3 className="font-poppins font-bold text-lg md:text-xl text-[#1F3B5A] mb-2 group-hover:text-[#1B83C8] transition-colors line-clamp-2">
                     {event.title}
                 </h3>
 

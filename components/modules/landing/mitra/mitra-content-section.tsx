@@ -284,7 +284,7 @@ const PackageCard = ({ package: pkg, index }: PackageCardProps) => {
                 {pkg.name}
             </h4>
             <div className="mb-4">
-                <span className="font-mochi-boom text-3xl md:text-4xl text-[#1F3B5A]">Rp {pkg.price}</span>
+                <span className="font-poppins font-bold text-3xl md:text-4xl text-[#1F3B5A]">Rp {pkg.price}</span>
             </div>
             <p className="font-poppins text-sm text-gray-600 mb-6">
                 {pkg.description}
@@ -329,7 +329,7 @@ const StepCard = ({ step, index }: StepCardProps) => {
     return (
         <div ref={cardRef} className="text-center">
             <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 rounded-full bg-yellow-300 flex items-center justify-center">
-                <span className="font-mochi-boom text-xl md:text-2xl text-[#1F3B5A]">{step.step}</span>
+                <span className="font-poppins font-bold text-xl md:text-2xl text-[#1F3B5A]">{step.step}</span>
             </div>
             <h4 className="font-mochi-boom text-sm md:text-base text-[#1F3B5A] mb-1">
                 {step.title}

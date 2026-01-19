@@ -53,14 +53,16 @@ const Navbar = () => {
 
     return (
         <>
-            <Image
-                ref={logoRef}
-                src="/logo.png"
-                alt="logo"
-                width={100}
-                height={100}
-                className="absolute top-5 left-5 z-20 w-18 h-18 md:w-20 md:h-20"
-            />
+            <Link href="/" className="absolute top-5 left-5 z-50">
+                <Image
+                    ref={logoRef}
+                    src="/logo.png"
+                    alt="Logo"
+                    width={100}
+                    height={100}
+                    className="w-16 h-16 md:w-20 md:h-20"
+                />
+            </Link>
 
             {/* Sidebar Sheet */}
             <Sheet>

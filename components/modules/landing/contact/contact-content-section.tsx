@@ -284,7 +284,7 @@ const ContactContentSection = () => {
                 </h3>
                 <div className="w-full h-80 md:h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-yellow-300">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2866044766814!2d106.82702031476896!3d-6.225536995492452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x5371bf0fdad786a2!2sJakarta!5e0!3m2!1sen!2sid!4v1642583845672!5m2!1sen!2sid"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.9182089533047!2d112.4968332!3d-7.0189002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e77e4c1c50fc7b5%3A0xc8a8ee7941a2839c!2sTeknosa%20Corp!5e0!3m2!1sen!2sid!4v1768807492516!5m2!1sen!2sid"
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}
