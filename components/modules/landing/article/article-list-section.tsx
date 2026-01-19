@@ -119,7 +119,7 @@ const ArticleListSection = () => {
                     trigger: titleRef.current,
                     start: "top 90%",
                     end: "top 20%",
-                    toggleActions: "play none none reverse"
+                    toggleActions: "play none none none"
                 }
             })
         }
@@ -173,7 +173,7 @@ const ArticleCard = ({ title, excerpt, image, category, categoryColor, author, d
                     trigger: cardRef.current,
                     start: "top 90%",
                     end: "top 20%",
-                    toggleActions: "play none none reverse"
+                    toggleActions: "play none none none"
                 }
             })
         }
