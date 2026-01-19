@@ -164,7 +164,7 @@ const TentorListSection = () => {
                 {TENTOR_STATS.map((stat, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-center px-4 py-3 md:px-8 md:py-4 bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl min-w-[120px] md:min-w-[150px]"
+                        className="flex flex-col items-center px-4 py-3 md:px-8 md:py-4 bg-linear-to-br from-sky-50 to-sky-100 rounded-2xl min-w-[120px] md:min-w-[150px]"
                     >
                         <span className="text-[#1B83C8] mb-1">{stat.icon}</span>
                         <span className="font-mochi-boom text-2xl md:text-3xl text-[#1F3B5A]">
@@ -234,7 +234,7 @@ const TentorCard = ({ tentor, index }: TentorCardProps) => {
                 />
                 {/* Overlay gradient */}
                 <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+                    className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"
                 />
 
                 {/* Role Badge */}
