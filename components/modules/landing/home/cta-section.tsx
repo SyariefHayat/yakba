@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowDown } from "lucide-react"
 import Image from "next/image"
-
-// Konstanta warna brand (sama dengan hero-section)
-const COLORS = {
-    green: "#7CBF25",
-    pink: "#EE2D70",
-    blue: "#1B83C8",
-} as const
+import { COLORS } from "@/lib/constants"
 
 // Data kata-kata dengan warna
 const CTA_WORDS = [
