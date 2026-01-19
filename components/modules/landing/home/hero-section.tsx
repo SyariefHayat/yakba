@@ -70,7 +70,7 @@ const HeroSection = () => {
             {/* Hero Content */}
             <div
                 ref={heroContentRef}
-                className="absolute top-[41%] md:top-[35%] lg:top-[33%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
+                className="absolute top-[41%] md:top-[35%] lg:top-[18%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
             >
 
                 {/* Title YAKBA KINDERGARTEN */}
