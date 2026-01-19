@@ -269,7 +269,7 @@ const GalleryGridSection = () => {
                             className="max-h-[80vh] w-auto object-contain rounded-lg"
                         />
                         {/* Caption */}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-6 rounded-b-lg">
+                        <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-4 md:p-6 rounded-b-lg">
                             <span
                                 className="inline-block px-3 py-1 rounded-full text-white text-xs font-poppins font-semibold mb-2"
                                 style={{ backgroundColor: selectedImage.categoryColor }}
@@ -350,7 +350,7 @@ const GalleryCard = ({ item, index, onClick }: GalleryCardProps) => {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Category Badge */}
             <span
