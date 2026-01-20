@@ -49,7 +49,9 @@ export function LoginForm({
                                 <Input id="password" type="password" required />
                             </Field>
                             <Field>
-                                <Button type="submit" className="cursor-pointer">Login</Button>
+                                <Button type="submit" className="cursor-pointer" asChild>
+                                    <Link href="/dashboard">Login</Link>
+                                </Button>
                             </Field>
                             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
