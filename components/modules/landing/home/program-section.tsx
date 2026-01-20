@@ -4,6 +4,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useRef } from "react"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -15,6 +16,7 @@ interface ProgramItem {
     image: string
     bgColor: string      // Warna background card
     headerBgColor: string // Warna background header/image area
+    slug: string         // Slug untuk link ke detail
 }
 
 // Interface untuk props ProgramCard dengan index
@@ -30,6 +32,7 @@ const PROGRAMS: ProgramItem[] = [
         image: "/program-img-1.png",
         bgColor: "#D0995E",
         headerBgColor: "bg-orange-300",
+        slug: "kreativitas-seni",
     },
     {
         title: "Belajar Mengaji",
@@ -37,6 +40,7 @@ const PROGRAMS: ProgramItem[] = [
         image: "/program-img-2.png",
         bgColor: "#69B5D9",
         headerBgColor: "bg-sky-300",
+        slug: "belajar-mengaji",
     },
     {
         title: "Kelas Bahasa",
@@ -44,6 +48,7 @@ const PROGRAMS: ProgramItem[] = [
         image: "/program-img-3.png",
         bgColor: "#8B7A9E",
         headerBgColor: "bg-[#AA8FC7]",
+        slug: "kelas-bahasa",
     },
 ]
 
@@ -91,7 +96,7 @@ const ProgramSection = () => {
 }
 
 // Komponen untuk setiap program card
-const ProgramCard = ({ title, description, image, bgColor, headerBgColor, index }: ProgramCardProps) => {
+const ProgramCard = ({ title, description, image, bgColor, headerBgColor, slug, index }: ProgramCardProps) => {
     const cardRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -145,8 +150,8 @@ const ProgramCard = ({ title, description, image, bgColor, headerBgColor, index 
                 <p className="font-poppins text-base md:text-lg text-white mt-1">
                     {description}
                 </p>
-                <Button className="mt-3 bg-yellow-300 hover:bg-yellow-400 text-black cursor-pointer">
-                    Lihat lebih detail
+                <Button className="mt-3 bg-yellow-300 hover:bg-yellow-400 text-black cursor-pointer" asChild>
+                    <Link href={`/programs/${slug}`}>Lihat lebih detail</Link>
                 </Button>
             </div>
         </div>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import Image from "next/image"
 import { COLORS } from "@/lib/constants"
+import Link from "next/link"
 
 // Data kata-kata dengan warna
 const CTA_WORDS = [
@@ -73,8 +74,8 @@ const CtaSection = () => {
                     </div>
 
                     {/* CTA Button */}
-                    <Button className=" bg-yellow-300 text-black text-xs md:text-base font-bold font-poppins hover:bg-yellow-400 cursor-pointer shadow-lg">
-                        Mulai Sekarang
+                    <Button className=" bg-yellow-300 text-black text-xs md:text-base font-bold font-poppins hover:bg-yellow-400 cursor-pointer shadow-lg" asChild>
+                        <Link href="/login">Mulai Sekarang</Link>
                     </Button>
                 </div>
 

@@ -8,15 +8,18 @@ export const COLORS = {
 
 // Huruf YAKBA dengan warnanya
 export const YAKBA_LETTERS = [
+    { letter: "Y", color: COLORS.pink },
     { letter: "A", color: COLORS.green },
-    { letter: "K", color: COLORS.pink },
-    { letter: "B", color: COLORS.blue },
+    { letter: "K", color: COLORS.blue },
+    { letter: "B", color: COLORS.pink },
     { letter: "A", color: COLORS.green },
 ] as const
 
 // Menu items untuk sidebar navigasi
 export const MENU_ITEMS = [
     { label: "Beranda", href: "/" },
+    { label: "Tentang Kami", href: "/about" },
+    { label: "Program", href: "/programs" },
     { label: "Artikel", href: "/article" },
     { label: "Galeri", href: "/gallery" },
     { label: "Fasilitas", href: "/facilities" },

@@ -18,30 +18,30 @@ interface FooterColumn {
 // Data footer columns (termasuk Social Media)
 const FOOTER_COLUMNS: FooterColumn[] = [
     {
-        title: "Navigation",
+        title: "Navigasi",
         links: [
-            { label: "Homepage", href: "/" },
-            { label: "Our Mission", href: "/mission" },
-            { label: "Our Journey", href: "/journey" },
-            { label: "Contact Us", href: "/contact" },
+            { label: "Beranda", href: "/" },
+            { label: "Tentang Kami", href: "/about" },
+            { label: "Program", href: "/programs" },
+            { label: "Hubungi Kami", href: "/contact" },
         ],
     },
     {
-        title: "Programs",
+        title: "Program",
         links: [
-            { label: "Toddlers", href: "/programs/toddlers" },
-            { label: "Preschool", href: "/programs/preschool" },
-            { label: "Kindergarten", href: "/programs/kindergarten" },
-            { label: "Others", href: "/programs/others" },
+            { label: "Kreativitas Seni", href: "/programs/kreativitas-seni" },
+            { label: "Belajar Mengaji", href: "/programs/belajar-mengaji" },
+            { label: "Kelas Bahasa", href: "/programs/kelas-bahasa" },
+            { label: "Lihat Semua", href: "/programs" },
         ],
     },
     {
-        title: "Company",
+        title: "Lainnya",
         links: [
-            { label: "About Us", href: "/about" },
-            { label: "Features", href: "/features" },
-            { label: "Careers", href: "/careers" },
-            { label: "Blog", href: "/blog" },
+            { label: "Artikel", href: "/article" },
+            { label: "Galeri", href: "/gallery" },
+            { label: "Fasilitas", href: "/facilities" },
+            { label: "Tentor", href: "/tentor" },
         ],
     },
     {
@@ -60,8 +60,8 @@ const FOOTER_COLUMNS: FooterColumn[] = [
 
 // Data bottom links
 const BOTTOM_LINKS = [
-    { label: "Term & Conditions", href: "/terms" },
-    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Syarat & Ketentuan", href: "/terms" },
+    { label: "Kebijakan Privasi", href: "/privacy" },
 ]
 
 const Footer = () => {

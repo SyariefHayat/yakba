@@ -1,15 +1,13 @@
 "use client"
 
-import gsap from "gsap"
 import { useEffect, useRef } from "react"
+import gsap from "gsap"
 
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { COLORS, YAKBA_LETTERS } from "@/lib/constants"
 import Navbar from "@/components/modules/landing/shared/navbar"
-import Link from "next/link"
+import { COLORS, YAKBA_LETTERS } from "@/lib/constants"
 
-const HeroSection = () => {
+const AboutHeroSection = () => {
     const heroContentRef = useRef<HTMLDivElement>(null)
     const cloudLeftRef = useRef<HTMLImageElement>(null)
     const cloudRightRef = useRef<HTMLImageElement>(null)
@@ -65,18 +63,18 @@ const HeroSection = () => {
     }, [])
 
     return (
-        <section className="relative w-full h-[65vh] md:h-[70vh] lg:h-screen bg-sky-100 overflow-hidden">
+        <section className="relative w-full h-[30vh] lg:h-[50vh] bg-sky-100 overflow-hidden">
             <Navbar />
 
             {/* Hero Content */}
             <div
                 ref={heroContentRef}
-                className="absolute top-[41%] md:top-[35%] lg:top-[18%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-2xl md:text-4xl space-y-2 z-30"
+                className="absolute top-[54%] md:top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center font-mochi-boom text-xl md:text-3xl space-y-2 z-30"
             >
+                <p className="md:mb-2">Tentang Kami</p>
 
-                {/* Title YAKBA KINDERGARTEN */}
-                <h1 className="font-bold text-[clamp(2.25rem,6vw,5rem)]"
-                    style={{ color: COLORS.navy }}>
+                {/* Title YAKBA */}
+                <h1 className="text-3xl md:text-5xl" style={{ color: COLORS.navy }}>
                     {YAKBA_LETTERS.map(({ letter, color }, index) => (
                         <span key={index} style={{ color }}>
                             {letter}
@@ -86,16 +84,11 @@ const HeroSection = () => {
                 </h1>
 
                 {/* Tagline */}
-                <p className="-mt-1 md:mt-0">
+                <p className="-mt-1 md:mt-0 text-lg md:text-2xl">
                     <span style={{ color: COLORS.green }}>Belajar, </span>
                     <span style={{ color: COLORS.pink }}>Bermain, </span>
                     <span style={{ color: COLORS.blue }}>Berakhlak</span>
                 </p>
-
-                {/* CTA Button */}
-                <Button className="text-xs font-bold md:text-base md:py-5 bg-yellow-300 text-black font-poppins hover:bg-yellow-400 cursor-pointer" asChild>
-                    <Link href="/login">Mulai Sekarang</Link>
-                </Button>
             </div>
 
             {/* Cloud Assets */}
@@ -106,7 +99,7 @@ const HeroSection = () => {
                 width={0}
                 height={0}
                 sizes="50vw"
-                className="absolute bottom-16 md:bottom-35 lg:bottom-15 left-0 w-1/2 h-auto z-10"
+                className="absolute bottom-6 md:bottom-15 left-0 w-1/2 h-auto z-10"
             />
             <Image
                 ref={cloudRightRef}
@@ -115,16 +108,7 @@ const HeroSection = () => {
                 width={0}
                 height={0}
                 sizes="50vw"
-                className="absolute bottom-16.5 md:bottom-36 lg:bottom-16.5 right-0 w-1/2 h-auto z-10"
-            />
-
-            {/* Mascot */}
-            <Image
-                src="/maskot.png"
-                alt="Yakba mascot"
-                width={500}
-                height={500}
-                className="absolute bottom-0 md:bottom-10 lg:bottom-0 left-1/2 -translate-x-1/2 z-30 w-[300px] md:w-[600px] lg:w-[500px] h-auto"
+                className="absolute bottom-[25px] md:bottom-16 right-0 w-1/2 h-auto z-10"
             />
 
             {/* Land/Ground */}
@@ -134,10 +118,10 @@ const HeroSection = () => {
                 width={0}
                 height={0}
                 sizes="100vw"
-                className="absolute bottom-0 lg:-bottom-40 left-0 w-full h-auto z-20"
+                className="absolute -bottom-10 md:-bottom-20 lg:-bottom-40 left-0 w-full h-auto z-20"
             />
-        </section >
+        </section>
     )
 }
 
-export default HeroSection
+export default AboutHeroSection

@@ -5,6 +5,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
@@ -204,8 +205,8 @@ const WhyCard = ({ title, description, image, imagePosition }: WhyItem) => {
             <p className="font-poppins text-base md:text-lg text-white">
                 {description}
             </p>
-            <Button className="mt-2 bg-yellow-300 hover:bg-yellow-400 text-black cursor-pointer">
-                Lihat lebih detail
+            <Button className="mt-2 bg-yellow-300 hover:bg-yellow-400 text-black cursor-pointer" asChild>
+                <Link href="/about">Lihat lebih detail</Link>
             </Button>
         </div>
     )
