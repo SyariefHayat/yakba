@@ -4,7 +4,6 @@ import * as React from "react"
 
 import {
     BarChart3,
-    Command,
     FolderTree,
     LayoutDashboard,
     Package,
@@ -23,8 +22,10 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
+import Image from "next/image"
 import { NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
+import { YAKBA_LETTERS } from "@/lib/constants"
 
 const data = {
     user: {
@@ -79,13 +80,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <a href="#">
-                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                                    <Command className="size-4" />
-                                </div>
-                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-medium">Yakba</span>
-                                    <span className="truncate text-xs">Learning Center</span>
+                            <a href="/dashboard">
+                                <Image src="/logo.png" alt="Logo YAKBA" width={100} height={100} className="w-10 h-10" />
+                                <div className="flex flex-col flex-1 text-left leading-tight">
+                                    <span className="font-mochi-boom text-3xl mt-1">
+                                        {YAKBA_LETTERS.map(({ letter, color }, index) => (
+                                            <span key={index} style={{ color }}>
+                                                {letter}
+                                            </span>
+                                        ))}
+                                    </span>
+                                    <span className="truncate text-xs text-muted-foreground -mt-2 ml-1">Learning Center</span>
                                 </div>
                             </a>
                         </SidebarMenuButton>
