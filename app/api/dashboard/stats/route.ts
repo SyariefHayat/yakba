@@ -17,7 +17,7 @@ export async function GET() {
         ]);
 
         const totalRevenue = revenueResult.reduce<number>(
-            (sum: number, item) => sum + item.quantity * item.priceAtOrder,
+            (sum: number, item: { quantity: number; priceAtOrder: number }) => sum + item.quantity * item.priceAtOrder,
             0
         );
 
