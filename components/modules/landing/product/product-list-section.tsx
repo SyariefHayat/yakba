@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { COLORS } from "@/lib/constants"
 import { ShoppingCart, Star, Tag, Loader2, PackageX } from "lucide-react"
@@ -258,71 +259,73 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
     }, [index])
 
     return (
-        <div
-            ref={cardRef}
-            className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100"
-        >
-            {/* Image Container */}
-            <div className="relative w-full h-40 md:h-48 overflow-hidden bg-gray-50">
-                <Image
-                    src={imageUrl}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+        <Link href={`/product/${product.slug}`}>
+            <div
+                ref={cardRef}
+                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100"
+            >
+                {/* Image Container */}
+                <div className="relative w-full h-40 md:h-48 overflow-hidden bg-gray-50">
+                    <Image
+                        src={imageUrl}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
 
-                {/* Badges */}
-                <div className="absolute top-2 left-2 flex flex-col gap-1">
-                    {discountPercent > 0 && (
-                        <span className="px-2 py-1 bg-red-500 text-white text-xs font-poppins font-semibold rounded-full flex items-center gap-1">
-                            <Tag className="size-3" />
-                            -{discountPercent}%
-                        </span>
-                    )}
-                </div>
+                    {/* Badges */}
+                    <div className="absolute top-2 left-2 flex flex-col gap-1">
+                        {discountPercent > 0 && (
+                            <span className="px-2 py-1 bg-red-500 text-white text-xs font-poppins font-semibold rounded-full flex items-center gap-1">
+                                <Tag className="size-3" />
+                                -{discountPercent}%
+                            </span>
+                        )}
+                    </div>
 
-                {/* Category Badge */}
-                <span
-                    className="absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-poppins font-semibold"
-                    style={{ backgroundColor: categoryColor }}
-                >
-                    {product.category.name}
-                </span>
-            </div>
-
-            {/* Content */}
-            <div className="p-3 md:p-4">
-                {/* Name */}
-                <h3 className="font-mochi-boom text-sm md:text-base text-[#1F3B5A] line-clamp-2 mb-1 group-hover:text-[#1B83C8] transition-colors">
-                    {product.name}
-                </h3>
-
-                {/* Description */}
-                <p className="font-poppins text-xs text-gray-500 line-clamp-2 mb-2 hidden md:block">
-                    {product.description}
-                </p>
-
-                {/* Price */}
-                <div className="flex items-center gap-2 mb-3">
-                    <span className="font-poppins font-bold text-base md:text-lg text-[#1B83C8]">
-                        {formatPrice(discountedPrice)}
+                    {/* Category Badge */}
+                    <span
+                        className="absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-poppins font-semibold"
+                        style={{ backgroundColor: categoryColor }}
+                    >
+                        {product.category.name}
                     </span>
-                    {discountPercent > 0 && (
-                        <span className="font-poppins text-xs text-gray-400 line-through">
-                            {formatPrice(product.price)}
-                        </span>
-                    )}
                 </div>
 
-                {/* Add to Cart Button */}
-                <Button
-                    className="w-full bg-yellow-300 hover:bg-yellow-400 text-black font-poppins text-xs md:text-sm py-2 cursor-pointer"
-                >
-                    <ShoppingCart className="size-4 mr-1" />
-                    Beli Sekarang
-                </Button>
+                {/* Content */}
+                <div className="p-3 md:p-4">
+                    {/* Name */}
+                    <h3 className="font-mochi-boom text-sm md:text-base text-[#1F3B5A] line-clamp-2 mb-1 group-hover:text-[#1B83C8] transition-colors">
+                        {product.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="font-poppins text-xs text-gray-500 line-clamp-2 mb-2 hidden md:block">
+                        {product.description}
+                    </p>
+
+                    {/* Price */}
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="font-poppins font-bold text-base md:text-lg text-[#1B83C8]">
+                            {formatPrice(discountedPrice)}
+                        </span>
+                        {discountPercent > 0 && (
+                            <span className="font-poppins text-xs text-gray-400 line-through">
+                                {formatPrice(product.price)}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Add to Cart Button */}
+                    <Button
+                        className="w-full bg-yellow-300 hover:bg-yellow-400 text-black font-poppins text-xs md:text-sm py-2 cursor-pointer"
+                    >
+                        <ShoppingCart className="size-4 mr-1" />
+                        Beli Sekarang
+                    </Button>
+                </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
