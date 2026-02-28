@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
 
         // Calculate total revenue for the period
         const totalRevenue = orderItems.reduce(
-            (sum, item) => sum + item.quantity * item.priceAtOrder,
+            (sum: number, item: { quantity: number; priceAtOrder: number }) => sum + item.quantity * item.priceAtOrder,
             0
         );
 

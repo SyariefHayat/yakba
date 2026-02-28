@@ -45,10 +45,10 @@ export async function GET(req: NextRequest) {
         const ordersWithTotal = orders.map((order) => ({
             ...order,
             total: order.items.reduce(
-                (sum, item) => sum + item.quantity * item.priceAtOrder,
+                (sum: number, item: { quantity: number; priceAtOrder: number }) => sum + item.quantity * item.priceAtOrder,
                 0
             ),
-            itemCount: order.items.reduce((sum, item) => sum + item.quantity, 0),
+            itemCount: order.items.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0),
         }));
 
         return NextResponse.json({
