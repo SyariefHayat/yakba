@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
+
+const ROLES: Role[] = ["ADMIN", "USER"];
 import bcrypt from "bcryptjs";
 
 type Params = { params: Promise<{ id: string }> };
@@ -80,9 +82,9 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         }
 
         // Validasi role jika dikirim
-        if (role !== undefined && !Object.values(Role).includes(role)) {
+        if (role !== undefined && !ROLES.includes(role)) {
             return NextResponse.json(
-                { error: `Role tidak valid. Pilihan: ${Object.values(Role).join(", ")}` },
+                { error: `Role tidak valid. Pilihan: ${ROLES.join(", ")}` },
                 { status: 400 }
             );
         }

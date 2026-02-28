@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { ProductType } from "@prisma/client";
+import type { ProductType } from "@prisma/client";
+
+const PRODUCT_TYPES: ProductType[] = ["DIGITAL", "PHYSICAL"];
 
 // GET /api/products
 // Query params: ?page=1&limit=10&search=keyword&type=DIGITAL&category=slug
@@ -81,9 +83,9 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        if (!Object.values(ProductType).includes(type)) {
+        if (!PRODUCT_TYPES.includes(type)) {
             return NextResponse.json(
-                { error: `Tipe tidak valid. Pilihan: ${Object.values(ProductType).join(", ")}` },
+                { error: `Tipe tidak valid. Pilihan: ${PRODUCT_TYPES.join(", ")}` },
                 { status: 400 }
             );
         }

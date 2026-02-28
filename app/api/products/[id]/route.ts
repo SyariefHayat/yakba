@@ -1,7 +1,9 @@
 import prisma from "@/lib/prisma";
 import cloudinary from "@/lib/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
-import { ProductType } from "@prisma/client";
+import type { ProductType } from "@prisma/client";
+
+const PRODUCT_TYPES: ProductType[] = ["DIGITAL", "PHYSICAL"];
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -78,9 +80,9 @@ export async function PATCH(req: NextRequest, { params }: Params) {
             );
         }
 
-        if (type !== undefined && !Object.values(ProductType).includes(type)) {
+        if (type !== undefined && !PRODUCT_TYPES.includes(type)) {
             return NextResponse.json(
-                { error: `Tipe tidak valid. Pilihan: ${Object.values(ProductType).join(", ")}` },
+                { error: `Tipe tidak valid. Pilihan: ${PRODUCT_TYPES.join(", ")}` },
                 { status: 400 }
             );
         }

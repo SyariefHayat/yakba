@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { OrderStatus } from "@prisma/client";
+import type { OrderStatus } from "@prisma/client";
+
+const ORDER_STATUSES: OrderStatus[] = ["PENDING", "CONTACTED", "SUCCESS", "CANCELED"];
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -19,9 +21,9 @@ export async function PATCH(req: NextRequest, { params }: Params) {
             );
         }
 
-        if (status !== undefined && !Object.values(OrderStatus).includes(status)) {
+        if (status !== undefined && !ORDER_STATUSES.includes(status)) {
             return NextResponse.json(
-                { error: `Status tidak valid. Pilihan: ${Object.values(OrderStatus).join(", ")}` },
+                { error: `Status tidak valid. Pilihan: ${ORDER_STATUSES.join(", ")}` },
                 { status: 400 }
             );
         }

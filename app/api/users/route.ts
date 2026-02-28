@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
+
+const ROLES: Role[] = ["ADMIN", "USER"];
 import bcrypt from "bcryptjs";
 
 // GET /api/users
@@ -92,9 +94,9 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        if (role && !Object.values(Role).includes(role)) {
+        if (role && !ROLES.includes(role)) {
             return NextResponse.json(
-                { error: `Role tidak valid. Pilihan: ${Object.values(Role).join(", ")}` },
+                { error: `Role tidak valid. Pilihan: ${ROLES.join(", ")}` },
                 { status: 400 }
             );
         }
@@ -115,7 +117,7 @@ export async function POST(req: NextRequest) {
                 name: name ?? null,
                 email,
                 password: hashedPassword,
-                role: role ?? Role.USER,
+                role: role ?? "USER",
             },
             select: {
                 id: true,
