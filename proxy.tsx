@@ -1,15 +1,17 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+const publicRoutes = ["/", "/about"];
+
 export const proxy = auth((req) => {
     const isLoggedIn = !!req.auth;
-    const isAuthPage = req.nextUrl.pathname === "/";
+    const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
 
-    if (!isLoggedIn && !isAuthPage) {
+    if (!isLoggedIn && !isPublicRoute) {
         return NextResponse.redirect(new URL("/", req.nextUrl));
     }
 
-    if (isLoggedIn && isAuthPage) {
+    if (isLoggedIn && req.nextUrl.pathname === "/") {
         return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     }
 });
