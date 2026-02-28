@@ -1,15 +1,23 @@
-import { Toaster } from "@/components/ui/sonner";
-import { LoginForm } from "@/components/modules/signin/login-form";
+import CtaSection from "@/components/modules/landing/home/cta-section"
+import FaqSection from "@/components/modules/landing/home/faq-section"
+import Footer from "@/components/modules/landing/home/footer"
+import GallerySection from "@/components/modules/landing/home/gallery-section"
+import HeroSection from "@/components/modules/landing/home/hero-section"
+import ProgramSection from "@/components/modules/landing/home/program-section"
+import WhySection from "@/components/modules/landing/home/why-section"
 
-export default function LoginPage() {
+const Home = () => {
   return (
-    <div className="relative min-h-svh bg-linear-to-b from-sky-100 via-sky-50 to-white overflow-hidden">
-      <Toaster />
-      <div className="relative z-10 flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
-        <div className="w-full max-w-sm md:max-w-4xl">
-          <LoginForm />
-        </div>
-      </div>
-    </div>
+    <main className="font-poppins">
+      <HeroSection />
+      <WhySection />
+      <ProgramSection />
+      <GallerySection />
+      <FaqSection />
+      <CtaSection />
+      <Footer />
+    </main>
   )
 }
+
+export default Home
