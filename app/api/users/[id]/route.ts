@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import type { Role } from "@prisma/client";
 
+type Role = "ADMIN" | "USER";
 const ROLES: Role[] = ["ADMIN", "USER"];
 import bcrypt from "bcryptjs";
 

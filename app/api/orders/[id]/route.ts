@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import type { OrderStatus } from "@prisma/client";
 
-const ORDER_STATUSES: OrderStatus[] = ["PENDING", "CONTACTED", "SUCCESS", "CANCELED"];
+const ORDER_STATUSES = ["PENDING", "CONTACTED", "SUCCESS", "CANCELED"] as const;
+type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 type Params = { params: Promise<{ id: string }> };
 

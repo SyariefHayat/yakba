@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import cloudinary from "@/lib/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
-import type { ProductType } from "@prisma/client";
 
+type ProductType = "DIGITAL" | "PHYSICAL";
 const PRODUCT_TYPES: ProductType[] = ["DIGITAL", "PHYSICAL"];
 
 type Params = { params: Promise<{ id: string }> };

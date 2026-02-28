@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import type { OrderStatus } from "@prisma/client";
+type OrderStatus = "PENDING" | "CONTACTED" | "SUCCESS" | "CANCELED";
 
 // GET /api/orders?page=1&limit=10&search=keyword&status=PENDING
 export async function GET(req: NextRequest) {
