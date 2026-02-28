@@ -94,7 +94,7 @@ const HeroSection = () => {
 
                 {/* CTA Button */}
                 <Button className="text-xs font-bold md:text-base md:py-5 bg-yellow-300 text-black font-poppins hover:bg-yellow-400 cursor-pointer" asChild>
-                    <Link href="/login">Mulai Sekarang</Link>
+                    <Link href="/signin">Mulai Sekarang</Link>
                 </Button>
             </div>
 
