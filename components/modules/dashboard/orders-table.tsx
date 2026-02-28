@@ -1,14 +1,5 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { toast } from "sonner"
-import { Eye, Loader2, Pencil, Search, Trash2 } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-
 import {
     Table,
     TableBody,
@@ -46,7 +37,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-// ---------- Types ----------
+import { toast } from "sonner"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useState, useCallback } from "react"
+import { Eye, Loader2, MoreHorizontalIcon, Pencil, Search, Trash2 } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
 type OrderItem = {
     id: string
     productId: string
@@ -94,7 +93,6 @@ function getStatusConfig(status: string) {
     return STATUS_OPTIONS.find((s) => s.value === status) ?? STATUS_OPTIONS[0]
 }
 
-// ---------- Component ----------
 export function OrdersTable() {
     const [orders, setOrders] = useState<Order[]>([])
     const [meta, setMeta] = useState<Meta | null>(null)
@@ -103,20 +101,16 @@ export function OrdersTable() {
     const [statusFilter, setStatusFilter] = useState("ALL")
     const [page, setPage] = useState(1)
 
-    // Detail dialog
     const [detailOrder, setDetailOrder] = useState<Order | null>(null)
 
-    // Edit status dialog
     const [editOrder, setEditOrder] = useState<Order | null>(null)
     const [editStatus, setEditStatus] = useState("")
     const [editNotes, setEditNotes] = useState("")
     const [submitting, setSubmitting] = useState(false)
 
-    // Delete dialog
     const [deleteOrder, setDeleteOrder] = useState<Order | null>(null)
     const [deleting, setDeleting] = useState(false)
 
-    // ---------- Fetch ----------
     const fetchOrders = useCallback(async () => {
         setLoading(true)
         try {
@@ -142,7 +136,6 @@ export function OrdersTable() {
         return () => clearTimeout(timer)
     }, [fetchOrders])
 
-    // ---------- Edit Status ----------
     function openEditDialog(order: Order) {
         setEditOrder(order)
         setEditStatus(order.status)
@@ -170,7 +163,6 @@ export function OrdersTable() {
         }
     }
 
-    // ---------- Delete ----------
     async function handleDelete() {
         if (!deleteOrder) return
         setDeleting(true)
@@ -188,10 +180,8 @@ export function OrdersTable() {
         }
     }
 
-    // ---------- Render ----------
     return (
         <div className="space-y-4">
-            {/* Toolbar */}
             <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                     <div className="relative w-64">
@@ -222,7 +212,6 @@ export function OrdersTable() {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="rounded-lg border">
                 <Table>
                     <TableHeader>
@@ -230,11 +219,11 @@ export function OrdersTable() {
                             <TableHead className="w-12">#</TableHead>
                             <TableHead>Pelanggan</TableHead>
                             <TableHead>Telepon</TableHead>
-                            <TableHead className="text-center">Items</TableHead>
-                            <TableHead className="text-right">Total</TableHead>
-                            <TableHead className="text-center">Status</TableHead>
+                            <TableHead>Items</TableHead>
+                            <TableHead>Total</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Tanggal</TableHead>
-                            <TableHead className="text-right">Aksi</TableHead>
+                            <TableHead>Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -268,13 +257,13 @@ export function OrdersTable() {
                                         <TableCell className="text-muted-foreground">
                                             {order.customerPhone}
                                         </TableCell>
-                                        <TableCell className="text-center">
+                                        <TableCell>
                                             <Badge variant="outline">{order.itemCount} item</Badge>
                                         </TableCell>
-                                        <TableCell className="text-right font-medium">
+                                        <TableCell className="font-medium">
                                             {formatRupiah(order.total)}
                                         </TableCell>
-                                        <TableCell className="text-center">
+                                        <TableCell>
                                             <Badge variant="secondary" className={statusCfg.color}>
                                                 {statusCfg.label}
                                             </Badge>
@@ -286,31 +275,30 @@ export function OrdersTable() {
                                                 year: "numeric",
                                             })}
                                         </TableCell>
-                                        <TableCell className="text-right">
-                                            <div className="flex justify-end gap-1">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => setDetailOrder(order)}
-                                                >
-                                                    <Eye className="size-4" />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => openEditDialog(order)}
-                                                >
-                                                    <Pencil className="size-4" />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="text-destructive hover:text-destructive"
-                                                    onClick={() => setDeleteOrder(order)}
-                                                >
-                                                    <Trash2 className="size-4" />
-                                                </Button>
-                                            </div>
+                                        <TableCell>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
+                                                        <MoreHorizontalIcon />
+                                                        <span className="sr-only">Open menu</span>
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem className="cursor-pointer" onClick={() => setDetailOrder(order)}>
+                                                        <Eye className="size-4" />
+                                                        Detail
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className="cursor-pointer" onClick={() => openEditDialog(order)}>
+                                                        <Pencil className="size-4" />
+                                                        Edit
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem className="cursor-pointer" variant="destructive" onClick={() => setDeleteOrder(order)}>
+                                                        <Trash2 className="size-4" />
+                                                        Hapus
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </TableCell>
                                     </TableRow>
                                 )
