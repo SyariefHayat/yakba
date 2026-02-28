@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-const publicRoutes = ["/", "/about"];
+const publicRoutes = ["/", "/about", "/programs", "/programs/:id"];
 
 export const proxy = auth((req) => {
     const isLoggedIn = !!req.auth;
