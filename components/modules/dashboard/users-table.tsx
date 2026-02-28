@@ -1,14 +1,5 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { toast } from "sonner"
-import { Loader2, Pencil, Plus, Search, Trash2 } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-
 import {
     Table,
     TableBody,
@@ -46,7 +37,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-// ---------- Types ----------
+import { toast } from "sonner"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useState, useCallback } from "react"
+import { Loader2, MoreHorizontalIcon, Pencil, Plus, Search, Trash2 } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
 type User = {
     id: string
     name: string | null
@@ -71,7 +70,6 @@ type FormData = {
 
 const emptyForm: FormData = { name: "", email: "", password: "", role: "USER" }
 
-// ---------- Component ----------
 export function UsersTable() {
     const [users, setUsers] = useState<User[]>([])
     const [meta, setMeta] = useState<Meta | null>(null)
@@ -79,17 +77,13 @@ export function UsersTable() {
     const [search, setSearch] = useState("")
     const [page, setPage] = useState(1)
 
-    // Dialog states
     const [formOpen, setFormOpen] = useState(false)
     const [editingUser, setEditingUser] = useState<User | null>(null)
     const [formData, setFormData] = useState<FormData>(emptyForm)
     const [submitting, setSubmitting] = useState(false)
-
-    // Delete dialog
     const [deleteUser, setDeleteUser] = useState<User | null>(null)
     const [deleting, setDeleting] = useState(false)
 
-    // ---------- Fetch ----------
     const fetchUsers = useCallback(async () => {
         setLoading(true)
         try {
@@ -114,7 +108,6 @@ export function UsersTable() {
         return () => clearTimeout(timer)
     }, [fetchUsers])
 
-    // ---------- Create / Edit ----------
     function openCreateDialog() {
         setEditingUser(null)
         setFormData(emptyForm)
@@ -136,7 +129,6 @@ export function UsersTable() {
         setSubmitting(true)
         try {
             if (editingUser) {
-                // PATCH
                 const body: Record<string, string> = {}
                 if (formData.name !== (editingUser.name ?? "")) body.name = formData.name
                 if (formData.email !== editingUser.email) body.email = formData.email
@@ -152,7 +144,6 @@ export function UsersTable() {
                 if (!res.ok) throw new Error(json.error)
                 toast.success("User berhasil diperbarui")
             } else {
-                // POST
                 const res = await fetch("/api/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -171,7 +162,6 @@ export function UsersTable() {
         }
     }
 
-    // ---------- Delete ----------
     async function handleDelete() {
         if (!deleteUser) return
         setDeleting(true)
@@ -189,10 +179,8 @@ export function UsersTable() {
         }
     }
 
-    // ---------- Render ----------
     return (
         <div className="space-y-4">
-            {/* Toolbar */}
             <div className="flex items-center justify-between gap-4">
                 <div className="relative w-full max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -212,7 +200,6 @@ export function UsersTable() {
                 </Button>
             </div>
 
-            {/* Table */}
             <div className="rounded-lg border">
                 <Table>
                     <TableHeader>
@@ -222,7 +209,7 @@ export function UsersTable() {
                             <TableHead>Email</TableHead>
                             <TableHead>Role</TableHead>
                             <TableHead>Tanggal Dibuat</TableHead>
-                            <TableHead className="text-right">Aksi</TableHead>
+                            <TableHead>Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -264,24 +251,26 @@ export function UsersTable() {
                                             year: "numeric",
                                         })}
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-1">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={() => openEditDialog(user)}
-                                            >
-                                                <Pencil className="size-4" />
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => setDeleteUser(user)}
-                                            >
-                                                <Trash2 className="size-4" />
-                                            </Button>
-                                        </div>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
+                                                    <MoreHorizontalIcon />
+                                                    <span className="sr-only">Open menu</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem className="cursor-pointer" onClick={() => openEditDialog(user)}>
+                                                    <Pencil className="size-4" />
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="cursor-pointer" variant="destructive" onClick={() => setDeleteUser(user)}>
+                                                    <Trash2 className="size-4" />
+                                                    Hapus
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -290,7 +279,6 @@ export function UsersTable() {
                 </Table>
             </div>
 
-            {/* Pagination */}
             {meta && meta.totalPages > 1 && (
                 <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
@@ -317,7 +305,6 @@ export function UsersTable() {
                 </div>
             )}
 
-            {/* Create / Edit Dialog */}
             <Dialog open={formOpen} onOpenChange={setFormOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -398,7 +385,6 @@ export function UsersTable() {
                 </DialogContent>
             </Dialog>
 
-            {/* Delete Confirmation */}
             <AlertDialog open={!!deleteUser} onOpenChange={(open) => !open && setDeleteUser(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
