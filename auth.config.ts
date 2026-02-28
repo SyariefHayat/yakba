@@ -33,4 +33,22 @@ export default {
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.name = user.name;
+                token.email = user.email;
+                token.picture = user.image;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.name = token.name ?? null;
+                session.user.email = token.email ?? "";
+                session.user.image = (token.picture as string) ?? null;
+            }
+            return session;
+        },
+    },
 } satisfies NextAuthConfig;
