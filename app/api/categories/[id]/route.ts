@@ -19,7 +19,23 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         }
 
         const updateData: Record<string, unknown> = {};
-        if (name !== undefined) updateData.name = name;
+        if (name !== undefined) {
+            updateData.name = name;
+            // Auto-update slug from new name
+            let slug = name
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-")
+                .trim();
+            const existingSlug = await prisma.category.findFirst({
+                where: { slug, id: { not: id } },
+            });
+            if (existingSlug) {
+                slug = `${slug}-${Date.now().toString(36)}`;
+            }
+            updateData.slug = slug;
+        }
         if (isActive !== undefined) updateData.isActive = isActive;
 
         if (Object.keys(updateData).length === 0) {

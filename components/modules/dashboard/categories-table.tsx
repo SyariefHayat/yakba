@@ -1,14 +1,5 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { toast } from "sonner"
-import { Loader2, Pencil, Plus, Search, Trash2 } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-
 import {
     Table,
     TableBody,
@@ -38,7 +29,35 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-// ---------- Types ----------
+import {
+    Loader2,
+    MoreHorizontalIcon,
+    Pencil,
+    Plus,
+    Search,
+    Trash2
+} from "lucide-react"
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
+
+import {
+    useEffect,
+    useState,
+    useCallback
+} from "react"
+
+import { toast } from "sonner"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+
 type Category = {
     id: string
     name: string
@@ -62,7 +81,6 @@ type FormData = {
 
 const emptyForm: FormData = { name: "", isActive: true }
 
-// ---------- Component ----------
 export function CategoriesTable() {
     const [categories, setCategories] = useState<Category[]>([])
     const [meta, setMeta] = useState<Meta | null>(null)
@@ -70,17 +88,14 @@ export function CategoriesTable() {
     const [search, setSearch] = useState("")
     const [page, setPage] = useState(1)
 
-    // Dialog states
     const [formOpen, setFormOpen] = useState(false)
     const [editingCategory, setEditingCategory] = useState<Category | null>(null)
     const [formData, setFormData] = useState<FormData>(emptyForm)
     const [submitting, setSubmitting] = useState(false)
 
-    // Delete dialog
     const [deleteCategory, setDeleteCategory] = useState<Category | null>(null)
     const [deleting, setDeleting] = useState(false)
 
-    // ---------- Fetch ----------
     const fetchCategories = useCallback(async () => {
         setLoading(true)
         try {
@@ -105,7 +120,6 @@ export function CategoriesTable() {
         return () => clearTimeout(timer)
     }, [fetchCategories])
 
-    // ---------- Create / Edit ----------
     function openCreateDialog() {
         setEditingCategory(null)
         setFormData(emptyForm)
@@ -157,7 +171,6 @@ export function CategoriesTable() {
         }
     }
 
-    // ---------- Delete ----------
     async function handleDelete() {
         if (!deleteCategory) return
         setDeleting(true)
@@ -175,10 +188,8 @@ export function CategoriesTable() {
         }
     }
 
-    // ---------- Render ----------
     return (
         <div className="space-y-4">
-            {/* Toolbar */}
             <div className="flex items-center justify-between gap-4">
                 <div className="relative w-full max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -192,13 +203,12 @@ export function CategoriesTable() {
                         className="pl-9"
                     />
                 </div>
-                <Button onClick={openCreateDialog}>
+                <Button onClick={openCreateDialog} className="cursor-pointer">
                     <Plus className="size-4 mr-2" />
                     Tambah Kategori
                 </Button>
             </div>
 
-            {/* Table */}
             <div className="rounded-lg border">
                 <Table>
                     <TableHeader>
@@ -206,9 +216,9 @@ export function CategoriesTable() {
                             <TableHead className="w-12">#</TableHead>
                             <TableHead>Nama</TableHead>
                             <TableHead>Slug</TableHead>
-                            <TableHead className="text-center">Jumlah Produk</TableHead>
-                            <TableHead className="text-center">Status</TableHead>
-                            <TableHead className="text-right">Aksi</TableHead>
+                            <TableHead>Jumlah Produk</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -238,12 +248,12 @@ export function CategoriesTable() {
                                     <TableCell className="text-muted-foreground font-mono text-sm">
                                         {cat.slug}
                                     </TableCell>
-                                    <TableCell className="text-center">
+                                    <TableCell>
                                         <Badge variant="outline">
                                             {cat._count.products} produk
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-center">
+                                    <TableCell>
                                         <Badge
                                             variant={cat.isActive ? "default" : "secondary"}
                                             className={cat.isActive
@@ -253,24 +263,26 @@ export function CategoriesTable() {
                                             {cat.isActive ? "Aktif" : "Nonaktif"}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-1">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={() => openEditDialog(cat)}
-                                            >
-                                                <Pencil className="size-4" />
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => setDeleteCategory(cat)}
-                                            >
-                                                <Trash2 className="size-4" />
-                                            </Button>
-                                        </div>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
+                                                    <MoreHorizontalIcon />
+                                                    <span className="sr-only">Open menu</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem className="cursor-pointer" onClick={() => openEditDialog(cat)}>
+                                                    <Pencil className="size-4" />
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="cursor-pointer" variant="destructive" onClick={() => setDeleteCategory(cat)}>
+                                                    <Trash2 className="size-4" />
+                                                    Hapus
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -279,7 +291,6 @@ export function CategoriesTable() {
                 </Table>
             </div>
 
-            {/* Pagination */}
             {meta && meta.totalPages > 1 && (
                 <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
@@ -306,7 +317,6 @@ export function CategoriesTable() {
                 </div>
             )}
 
-            {/* Create / Edit Dialog */}
             <Dialog open={formOpen} onOpenChange={setFormOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -358,7 +368,6 @@ export function CategoriesTable() {
                 </DialogContent>
             </Dialog>
 
-            {/* Delete Confirmation */}
             <AlertDialog open={!!deleteCategory} onOpenChange={(open) => !open && setDeleteCategory(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
