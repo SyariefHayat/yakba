@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
             }),
         };
 
-        const [orders, total] = await prisma.$transaction([
+        const [orders, total] = await Promise.all([
             prisma.order.findMany({
                 where,
                 skip: (page - 1) * limit,

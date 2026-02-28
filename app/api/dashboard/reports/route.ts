@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
             .map(([date, revenue]) => ({ date, revenue }));
 
         // 3. Summary counts
-        const [totalOrders, totalProducts, totalCategories, totalUsers] = await prisma.$transaction([
+        const [totalOrders, totalProducts, totalCategories, totalUsers] = await Promise.all([
             prisma.order.count({ where: { createdAt: { gte: startDate } } }),
             prisma.product.count({ where: { isActive: true } }),
             prisma.category.count({ where: { isActive: true } }),

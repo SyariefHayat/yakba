@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 // GET /api/dashboard/stats
 export async function GET() {
     try {
-        const [totalProducts, totalOrders, totalUsers, revenueResult] = await prisma.$transaction([
+        const [totalProducts, totalOrders, totalUsers, revenueResult] = await Promise.all([
             prisma.product.count(),
             prisma.order.count(),
             prisma.user.count(),

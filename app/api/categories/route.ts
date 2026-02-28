@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
             }),
         };
 
-        const [categories, total] = await prisma.$transaction([
+        const [categories, total] = await Promise.all([
             prisma.category.findMany({
                 where,
                 skip: (page - 1) * limit,

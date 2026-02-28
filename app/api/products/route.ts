@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
             }),
         };
 
-        const [products, total] = await prisma.$transaction([
+        const [products, total] = await Promise.all([
             prisma.product.findMany({
                 where,
                 skip: (page - 1) * limit,
