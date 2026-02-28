@@ -12,43 +12,50 @@ export async function GET(req: NextRequest) {
         const search = searchParams.get("search") ?? "";
         const status = searchParams.get("status") as OrderStatus | null;
 
-        const where = {
-            ...(status && { status }),
-            ...(search && {
-                OR: [
-                    { customerName: { contains: search, mode: "insensitive" as const } },
-                    { customerPhone: { contains: search, mode: "insensitive" as const } },
-                ],
-            }),
-        };
-
-        const [orders, total] = await Promise.all([
-            prisma.order.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: { createdAt: "desc" },
-                include: {
-                    items: {
-                        include: {
-                            product: {
-                                select: { id: true, name: true, slug: true, type: true },
-                            },
+        const orders = await prisma.order.findMany({
+            where: {
+                ...(status && { status }),
+                ...(search && {
+                    OR: [
+                        { customerName: { contains: search, mode: "insensitive" as const } },
+                        { customerPhone: { contains: search, mode: "insensitive" as const } },
+                    ],
+                }),
+            },
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: { createdAt: "desc" },
+            include: {
+                items: {
+                    include: {
+                        product: {
+                            select: { id: true, name: true, slug: true, type: true },
                         },
                     },
                 },
-            }),
-            prisma.order.count({ where }),
-        ]);
+            },
+        });
+
+        const total = await prisma.order.count({
+            where: {
+                ...(status && { status }),
+                ...(search && {
+                    OR: [
+                        { customerName: { contains: search, mode: "insensitive" as const } },
+                        { customerPhone: { contains: search, mode: "insensitive" as const } },
+                    ],
+                }),
+            },
+        });
 
         // Add computed total for each order
         const ordersWithTotal = orders.map((order) => ({
             ...order,
             total: order.items.reduce(
-                (sum: number, item: { quantity: number; priceAtOrder: number }) => sum + item.quantity * item.priceAtOrder,
+                (sum, item) => sum + item.quantity * item.priceAtOrder,
                 0
             ),
-            itemCount: order.items.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0),
+            itemCount: order.items.reduce((sum, item) => sum + item.quantity, 0),
         }));
 
         return NextResponse.json({
