@@ -4,9 +4,10 @@ import prisma from "@/lib/prisma";
 // GET /api/dashboard/stats
 export async function GET() {
     try {
-        const [totalProducts, totalOrders, revenueResult] = await prisma.$transaction([
+        const [totalProducts, totalOrders, totalUsers, revenueResult] = await prisma.$transaction([
             prisma.product.count(),
             prisma.order.count(),
+            prisma.user.count(),
             prisma.orderItem.findMany({
                 select: {
                     quantity: true,
@@ -23,6 +24,7 @@ export async function GET() {
         return NextResponse.json({
             totalProducts,
             totalOrders,
+            totalUsers,
             totalRevenue,
         });
     } catch (error) {

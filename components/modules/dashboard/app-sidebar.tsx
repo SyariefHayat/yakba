@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import {
-    BarChart3,
     FolderTree,
     LayoutDashboard,
     Package,
@@ -59,11 +58,6 @@ const data = {
             title: "Orders",
             url: "/dashboard/orders",
             icon: Receipt,
-        },
-        {
-            title: "Reports",
-            url: "/dashboard/reports",
-            icon: BarChart3,
         },
         {
             title: "Settings",

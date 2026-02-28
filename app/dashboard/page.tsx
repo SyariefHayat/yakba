@@ -8,13 +8,11 @@ import {
 } from "@/components/ui/breadcrumb"
 
 import {
-  SidebarInset,
-  SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 import { Separator } from "@/components/ui/separator"
-import { AppSidebar } from "@/components/modules/dashboard/app-sidebar"
+import TopProducts from "@/components/modules/dashboard/top-products"
 import { StatsCards } from "@/components/modules/dashboard/stats-cards"
 import { TransactionChart } from "@/components/modules/dashboard/transaction-chart"
 
@@ -48,6 +46,7 @@ export default function Page() {
         <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min">
           <TransactionChart />
         </div>
+        <TopProducts />
       </div>
     </div>
   )

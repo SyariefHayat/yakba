@@ -1,8 +1,19 @@
 "use client"
 
+import {
+    Package,
+    ShoppingCart,
+    DollarSign
+} from "lucide-react"
+
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+
 import { useEffect, useState } from "react"
-import { Package, ShoppingCart, DollarSign } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 type DashboardStats = {
@@ -25,31 +36,25 @@ const statConfig = [
         key: "totalProducts" as const,
         title: "Total Product",
         icon: Package,
-        color: "text-blue-600",
-        bgColor: "bg-blue-100",
         format: (v: number) => v.toLocaleString("id-ID"),
     },
     {
         key: "totalOrders" as const,
         title: "Total Order",
         icon: ShoppingCart,
-        color: "text-green-600",
-        bgColor: "bg-green-100",
         format: (v: number) => v.toLocaleString("id-ID"),
     },
     {
         key: "totalRevenue" as const,
         title: "Total Revenue",
         icon: DollarSign,
-        color: "text-amber-600",
-        bgColor: "bg-amber-100",
         format: (v: number) => formatRupiah(v),
     },
 ]
 
 export function StatsCards() {
-    const [stats, setStats] = useState<DashboardStats | null>(null)
     const [loading, setLoading] = useState(true)
+    const [stats, setStats] = useState<DashboardStats | null>(null)
 
     useEffect(() => {
         fetch("/api/dashboard/stats")
@@ -61,25 +66,21 @@ export function StatsCards() {
 
     return (
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            {statConfig.map(({ key, title, icon: Icon, color, bgColor, format }) => (
-                <Card key={key} className="py-4">
-                    <CardHeader className="flex flex-row items-center justify-between pb-1">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
+            {statConfig.map(({ key, title, icon: Icon, format }) => (
+                <Card key={key}>
+                    <CardHeader className="pb-2">
+                        <CardDescription className="flex items-center justify-between">
                             {title}
+                            <Icon className="size-4 text-muted-foreground" />
+                        </CardDescription>
+                        <CardTitle className="text-3xl font-bold tabular-nums">
+                            {loading ? (
+                                <Skeleton className="h-9 w-28" />
+                            ) : (
+                                stats ? format(stats[key]) : "—"
+                            )}
                         </CardTitle>
-                        <div className={`rounded-md p-2 ${bgColor}`}>
-                            <Icon className={`size-4 ${color}`} />
-                        </div>
                     </CardHeader>
-                    <CardContent>
-                        {loading ? (
-                            <Skeleton className="h-8 w-24" />
-                        ) : (
-                            <p className={`text-2xl font-bold ${color}`}>
-                                {stats ? format(stats[key]) : "—"}
-                            </p>
-                        )}
-                    </CardContent>
                 </Card>
             ))}
         </div>
