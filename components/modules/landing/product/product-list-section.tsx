@@ -1,28 +1,52 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { COLORS } from "@/lib/constants"
-import { ShoppingCart, Star, Tag } from "lucide-react"
+import { ShoppingCart, Star, Tag, Loader2, PackageX } from "lucide-react"
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Interface untuk product item
-interface ProductItem {
-    id: number
+// Interface sesuai response API
+interface ProductImage {
+    id: string
+    imageUrl: string
+}
+
+interface ProductCategory {
+    id: string
     name: string
+    slug: string
+}
+
+interface ProductFromAPI {
+    id: string
+    name: string
+    slug: string
     description: string
-    image: string
     price: number
-    originalPrice?: number
-    category: string
-    categoryColor: string
-    rating: number
-    isNew?: boolean
-    isBestSeller?: boolean
+    discount: number | null
+    type: string
+    isActive: boolean
+    categoryId: string
+    category: ProductCategory
+    images: ProductImage[]
+    detail: {
+        stock: number | null
+        weight: number | null
+        fileUrl: string | null
+    } | null
+    createdAt: string
+}
+
+interface CategoryFromAPI {
+    id: string
+    name: string
+    slug: string
+    isActive: boolean
 }
 
 // Format harga ke Rupiah
@@ -35,114 +59,55 @@ const formatPrice = (price: number) => {
     }).format(price)
 }
 
-// Data produk (dummy data - bisa diganti dengan data dari API)
-const PRODUCTS: ProductItem[] = [
-    {
-        id: 1,
-        name: "Seragam YAKBA Lengkap",
-        description: "Set seragam lengkap dengan bahan nyaman dan berkualitas tinggi untuk aktivitas sehari-hari.",
-        image: "/program-img-1.png",
-        price: 350000,
-        originalPrice: 400000,
-        category: "Seragam",
-        categoryColor: COLORS.blue,
-        rating: 4.9,
-        isBestSeller: true,
-    },
-    {
-        id: 2,
-        name: "Buku Panduan Mengaji",
-        description: "Buku panduan mengaji dengan metode mudah dipahami untuk anak usia dini.",
-        image: "/program-img-2.png",
-        price: 75000,
-        category: "Buku",
-        categoryColor: COLORS.green,
-        rating: 4.8,
-        isNew: true,
-    },
-    {
-        id: 3,
-        name: "Tas Ransel YAKBA",
-        description: "Tas ransel dengan desain lucu dan ergonomis khusus untuk anak TK.",
-        image: "/program-img-3.png",
-        price: 150000,
-        originalPrice: 180000,
-        category: "Perlengkapan",
-        categoryColor: COLORS.pink,
-        rating: 4.7,
-    },
-    {
-        id: 4,
-        name: "Botol Minum Karakter",
-        description: "Botol minum food grade dengan karakter maskot YAKBA yang lucu.",
-        image: "/gallery-1.png",
-        price: 85000,
-        category: "Perlengkapan",
-        categoryColor: COLORS.pink,
-        rating: 4.6,
-        isNew: true,
-    },
-    {
-        id: 5,
-        name: "Set Alat Tulis YAKBA",
-        description: "Paket alat tulis lengkap dengan pensil, penghapus, dan tempat pensil.",
-        image: "/gallery-2.png",
-        price: 65000,
-        category: "Alat Tulis",
-        categoryColor: COLORS.blue,
-        rating: 4.5,
-    },
-    {
-        id: 6,
-        name: "Buku Aktivitas Anak",
-        description: "Buku aktivitas mewarnai, menggambar, dan puzzle untuk anak.",
-        image: "/gallery-3.png",
-        price: 45000,
-        category: "Buku",
-        categoryColor: COLORS.green,
-        rating: 4.8,
-        isBestSeller: true,
-    },
-    {
-        id: 7,
-        name: "Topi YAKBA",
-        description: "Topi dengan logo YAKBA, nyaman dipakai saat outdoor activity.",
-        image: "/gallery-4.png",
-        price: 55000,
-        category: "Aksesoris",
-        categoryColor: COLORS.pink,
-        rating: 4.4,
-    },
-    {
-        id: 8,
-        name: "Lunch Box Set",
-        description: "Kotak makan dengan sekat dan sendok garpu, BPA free.",
-        image: "/why-img-1.png",
-        price: 95000,
-        originalPrice: 120000,
-        category: "Perlengkapan",
-        categoryColor: COLORS.blue,
-        rating: 4.7,
-    },
-]
-
-// Category filter
-const CATEGORIES = [
-    { label: "Semua", value: "all" },
-    { label: "Seragam", value: "Seragam" },
-    { label: "Buku", value: "Buku" },
-    { label: "Perlengkapan", value: "Perlengkapan" },
-    { label: "Alat Tulis", value: "Alat Tulis" },
-    { label: "Aksesoris", value: "Aksesoris" },
-]
-
 const ProductListSection = () => {
     const titleRef = useRef<HTMLHeadingElement>(null)
+    const [products, setProducts] = useState<ProductFromAPI[]>([])
+    const [categories, setCategories] = useState<CategoryFromAPI[]>([])
     const [selectedCategory, setSelectedCategory] = useState("all")
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
 
-    const filteredProducts = selectedCategory === "all"
-        ? PRODUCTS
-        : PRODUCTS.filter(product => product.category === selectedCategory)
+    // Fetch categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await fetch("/api/categories")
+                const json = await res.json()
+                if (json.data) {
+                    setCategories(json.data.filter((c: CategoryFromAPI) => c.isActive))
+                }
+            } catch (err) {
+                console.error("Failed to fetch categories:", err)
+            }
+        }
+        fetchCategories()
+    }, [])
+
+    // Fetch products
+    const fetchProducts = useCallback(async () => {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const params = new URLSearchParams({ limit: "50" })
+            if (selectedCategory !== "all") {
+                params.set("categoryId", selectedCategory)
+            }
+            const res = await fetch(`/api/products?${params.toString()}`)
+            const json = await res.json()
+            if (json.data) {
+                setProducts(json.data.filter((p: ProductFromAPI) => p.isActive))
+            }
+        } catch (err) {
+            console.error("Failed to fetch products:", err)
+            setError("Gagal memuat produk. Silakan coba lagi.")
+        } finally {
+            setIsLoading(false)
+        }
+    }, [selectedCategory])
+
+    useEffect(() => {
+        fetchProducts()
+    }, [fetchProducts])
 
     useEffect(() => {
         // Animasi untuk title
@@ -176,34 +141,68 @@ const ProductListSection = () => {
 
             {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12 px-4">
-                {CATEGORIES.map((cat) => (
+                <button
+                    onClick={() => setSelectedCategory("all")}
+                    className={`
+                        px-4 py-2 md:px-6 md:py-3 rounded-full font-poppins text-sm md:text-base font-medium 
+                        transition-all duration-300 cursor-pointer
+                        ${selectedCategory === "all"
+                            ? "bg-yellow-300 text-black shadow-lg scale-105"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }
+                    `}
+                >
+                    Semua
+                </button>
+                {categories.map((cat) => (
                     <button
-                        key={cat.value}
-                        onClick={() => setSelectedCategory(cat.value)}
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.id)}
                         className={`
                             px-4 py-2 md:px-6 md:py-3 rounded-full font-poppins text-sm md:text-base font-medium 
                             transition-all duration-300 cursor-pointer
-                            ${selectedCategory === cat.value
+                            ${selectedCategory === cat.id
                                 ? "bg-yellow-300 text-black shadow-lg scale-105"
                                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                             }
                         `}
                     >
-                        {cat.label}
+                        {cat.name}
                     </button>
                 ))}
             </div>
 
+            {/* Loading State */}
+            {isLoading && (
+                <div className="flex flex-col items-center justify-center py-20 gap-3">
+                    <Loader2 className="size-10 text-[#1B83C8] animate-spin" />
+                    <p className="font-poppins text-gray-500">Memuat produk...</p>
+                </div>
+            )}
+
+            {/* Error State */}
+            {!isLoading && error && (
+                <div className="text-center py-20">
+                    <p className="font-poppins text-red-500 text-lg mb-4">{error}</p>
+                    <Button onClick={fetchProducts} className="bg-yellow-300 hover:bg-yellow-400 text-black font-poppins cursor-pointer">
+                        Coba Lagi
+                    </Button>
+                </div>
+            )}
+
             {/* Products Grid */}
-            <div className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {filteredProducts.map((product, index) => (
-                    <ProductCard key={product.id} product={product} index={index} />
-                ))}
-            </div>
+            {!isLoading && !error && products.length > 0 && (
+                <div className="w-[90%] md:w-[85%] lg:w-[80%] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    {products.map((product, index) => (
+                        <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                </div>
+            )}
 
             {/* Empty State */}
-            {filteredProducts.length === 0 && (
-                <div className="text-center py-20">
+            {!isLoading && !error && products.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-20 gap-3">
+                    <PackageX className="size-16 text-gray-300" />
                     <p className="font-poppins text-gray-500 text-lg">
                         Tidak ada produk untuk kategori ini
                     </p>
@@ -215,12 +214,25 @@ const ProductListSection = () => {
 
 // Komponen untuk setiap product card
 interface ProductCardProps {
-    product: ProductItem
+    product: ProductFromAPI
     index: number
 }
 
 const ProductCard = ({ product, index }: ProductCardProps) => {
     const cardRef = useRef<HTMLDivElement>(null)
+
+    const imageUrl = product.images.length > 0
+        ? product.images[0].imageUrl
+        : "/placeholder-product.png"
+
+    const discountPercent = product.discount ?? 0
+    const discountedPrice = discountPercent > 0
+        ? product.price - Math.round(product.price * discountPercent / 100)
+        : product.price
+
+    // Tentukan warna berdasarkan index category
+    const categoryColors = [COLORS.blue, COLORS.green, COLORS.pink]
+    const categoryColor = categoryColors[index % categoryColors.length]
 
     useEffect(() => {
         if (cardRef.current) {
@@ -245,10 +257,6 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
         }
     }, [index])
 
-    const discount = product.originalPrice
-        ? Math.round((1 - product.price / product.originalPrice) * 100)
-        : 0
-
     return (
         <div
             ref={cardRef}
@@ -257,7 +265,7 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
             {/* Image Container */}
             <div className="relative w-full h-40 md:h-48 overflow-hidden bg-gray-50">
                 <Image
-                    src={product.image}
+                    src={imageUrl}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -265,20 +273,10 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
 
                 {/* Badges */}
                 <div className="absolute top-2 left-2 flex flex-col gap-1">
-                    {product.isNew && (
-                        <span className="px-2 py-1 bg-green-500 text-white text-xs font-poppins font-semibold rounded-full">
-                            Baru
-                        </span>
-                    )}
-                    {product.isBestSeller && (
-                        <span className="px-2 py-1 bg-orange-500 text-white text-xs font-poppins font-semibold rounded-full">
-                            Best Seller
-                        </span>
-                    )}
-                    {discount > 0 && (
+                    {discountPercent > 0 && (
                         <span className="px-2 py-1 bg-red-500 text-white text-xs font-poppins font-semibold rounded-full flex items-center gap-1">
                             <Tag className="size-3" />
-                            -{discount}%
+                            -{discountPercent}%
                         </span>
                     )}
                 </div>
@@ -286,20 +284,14 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
                 {/* Category Badge */}
                 <span
                     className="absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-poppins font-semibold"
-                    style={{ backgroundColor: product.categoryColor }}
+                    style={{ backgroundColor: categoryColor }}
                 >
-                    {product.category}
+                    {product.category.name}
                 </span>
             </div>
 
             {/* Content */}
             <div className="p-3 md:p-4">
-                {/* Rating */}
-                <div className="flex items-center gap-1 mb-1">
-                    <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-poppins text-sm text-gray-600">{product.rating}</span>
-                </div>
-
                 {/* Name */}
                 <h3 className="font-mochi-boom text-sm md:text-base text-[#1F3B5A] line-clamp-2 mb-1 group-hover:text-[#1B83C8] transition-colors">
                     {product.name}
@@ -313,11 +305,11 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
                 {/* Price */}
                 <div className="flex items-center gap-2 mb-3">
                     <span className="font-poppins font-bold text-base md:text-lg text-[#1B83C8]">
-                        {formatPrice(product.price)}
+                        {formatPrice(discountedPrice)}
                     </span>
-                    {product.originalPrice && (
+                    {discountPercent > 0 && (
                         <span className="font-poppins text-xs text-gray-400 line-through">
-                            {formatPrice(product.originalPrice)}
+                            {formatPrice(product.price)}
                         </span>
                     )}
                 </div>
