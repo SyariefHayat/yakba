@@ -10,7 +10,7 @@ import {
 import { Toaster } from "@/components/ui/sonner"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { CategoriesTable } from "@/components/modules/dashboard/categories-table"
+import { CategoriesTable } from "@/components/modules/dashboard/categories/categories-table"
 
 export default function CategoriesPage() {
     return (

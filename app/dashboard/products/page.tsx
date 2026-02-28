@@ -10,7 +10,7 @@ import {
 import { Toaster } from "@/components/ui/sonner"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { ProductsTable } from "@/components/modules/dashboard/products-table"
+import { ProductsTable } from "@/components/modules/dashboard/products/products-table"
 
 export default function ProductsPage() {
     return (

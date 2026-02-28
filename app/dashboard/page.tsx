@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { Separator } from "@/components/ui/separator"
-import TopProducts from "@/components/modules/dashboard/top-products"
+import TopProducts from "@/components/modules/dashboard/products/top-products"
 import { StatsCards } from "@/components/modules/dashboard/stats-cards"
 import { TransactionChart } from "@/components/modules/dashboard/transaction-chart"
 

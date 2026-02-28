@@ -10,7 +10,7 @@ import {
 import { Toaster } from "@/components/ui/sonner"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { OrdersTable } from "@/components/modules/dashboard/orders-table"
+import { OrdersTable } from "@/components/modules/dashboard/orders/orders-table"
 
 export default function OrdersPage() {
     return (

@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
-import { UsersTable } from "@/components/modules/dashboard/users-table"
+import { UsersTable } from "@/components/modules/dashboard/users/users-table"
 
 export default function UsersPage() {
     return (
