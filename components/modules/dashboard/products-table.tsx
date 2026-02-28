@@ -1,14 +1,5 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { toast } from "sonner"
-import { Loader2, Pencil, Plus, Search, Trash2 } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-
 import {
     Table,
     TableBody,
@@ -46,7 +37,25 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-// ---------- Types ----------
+import {
+    ImagePlus,
+    Loader2,
+    MoreHorizontalIcon,
+    Pencil,
+    Plus,
+    Search,
+    Trash2,
+    X,
+} from "lucide-react"
+
+import { toast } from "sonner"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useState, useCallback } from "react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
 type Category = {
     id: string
     name: string
@@ -118,7 +127,6 @@ function formatRupiah(value: number) {
     }).format(value)
 }
 
-// ---------- Component ----------
 export function ProductsTable() {
     const [products, setProducts] = useState<Product[]>([])
     const [categories, setCategories] = useState<Category[]>([])
@@ -127,17 +135,16 @@ export function ProductsTable() {
     const [search, setSearch] = useState("")
     const [page, setPage] = useState(1)
 
-    // Dialog states
     const [formOpen, setFormOpen] = useState(false)
     const [editingProduct, setEditingProduct] = useState<Product | null>(null)
     const [formData, setFormData] = useState<FormData>(emptyForm)
     const [submitting, setSubmitting] = useState(false)
+    const [uploadedImages, setUploadedImages] = useState<string[]>([])
+    const [uploading, setUploading] = useState(false)
 
-    // Delete dialog
     const [deleteProduct, setDeleteProduct] = useState<Product | null>(null)
     const [deleting, setDeleting] = useState(false)
 
-    // ---------- Fetch categories ----------
     useEffect(() => {
         fetch("/api/categories")
             .then((res) => res.json())
@@ -145,7 +152,6 @@ export function ProductsTable() {
             .catch(console.error)
     }, [])
 
-    // ---------- Fetch products ----------
     const fetchProducts = useCallback(async () => {
         setLoading(true)
         try {
@@ -170,10 +176,10 @@ export function ProductsTable() {
         return () => clearTimeout(timer)
     }, [fetchProducts])
 
-    // ---------- Create / Edit ----------
     function openCreateDialog() {
         setEditingProduct(null)
         setFormData(emptyForm)
+        setUploadedImages([])
         setFormOpen(true)
     }
 
@@ -191,7 +197,34 @@ export function ProductsTable() {
             weight: product.detail?.weight ? String(product.detail.weight) : "",
             fileUrl: product.detail?.fileUrl ?? "",
         })
+        setUploadedImages(product.images.map((img) => img.imageUrl))
         setFormOpen(true)
+    }
+
+    async function handleImageUpload(files: FileList | null) {
+        if (!files || files.length === 0) return
+        setUploading(true)
+        try {
+            const newUrls: string[] = []
+            for (const file of Array.from(files)) {
+                const fd = new window.FormData()
+                fd.append("file", file)
+                const res = await fetch("/api/upload", { method: "POST", body: fd })
+                const json = await res.json()
+                if (!res.ok) throw new Error(json.error)
+                newUrls.push(json.url)
+            }
+            setUploadedImages((prev) => [...prev, ...newUrls])
+            toast.success(`${newUrls.length} gambar berhasil diupload`)
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Gagal upload gambar")
+        } finally {
+            setUploading(false)
+        }
+    }
+
+    function removeImage(url: string) {
+        setUploadedImages((prev) => prev.filter((u) => u !== url))
     }
 
     async function handleSubmit() {
@@ -213,6 +246,7 @@ export function ProductsTable() {
                 stock: formData.stock ? Number(formData.stock) : null,
                 weight: formData.weight ? Number(formData.weight) : null,
                 fileUrl: formData.fileUrl || null,
+                imageUrls: uploadedImages,
             }
 
             if (editingProduct) {
@@ -243,7 +277,6 @@ export function ProductsTable() {
         }
     }
 
-    // ---------- Delete ----------
     async function handleDelete() {
         if (!deleteProduct) return
         setDeleting(true)
@@ -261,10 +294,8 @@ export function ProductsTable() {
         }
     }
 
-    // ---------- Render ----------
     return (
         <div className="space-y-4">
-            {/* Toolbar */}
             <div className="flex items-center justify-between gap-4">
                 <div className="relative w-full max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -278,32 +309,32 @@ export function ProductsTable() {
                         className="pl-9"
                     />
                 </div>
-                <Button onClick={openCreateDialog}>
+                <Button onClick={openCreateDialog} className="cursor-pointer">
                     <Plus className="size-4 mr-2" />
                     Tambah Produk
                 </Button>
             </div>
 
-            {/* Table */}
             <div className="rounded-lg border">
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-12">#</TableHead>
+                            <TableHead className="w-16">Foto</TableHead>
                             <TableHead>Nama Produk</TableHead>
                             <TableHead>Kategori</TableHead>
                             <TableHead>Tipe</TableHead>
-                            <TableHead className="text-right">Harga</TableHead>
-                            <TableHead className="text-right">Diskon</TableHead>
-                            <TableHead className="text-center">Status</TableHead>
-                            <TableHead className="text-right">Aksi</TableHead>
+                            <TableHead>Harga</TableHead>
+                            <TableHead>Diskon</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {loading ? (
                             Array.from({ length: 5 }).map((_, i) => (
                                 <TableRow key={i}>
-                                    {Array.from({ length: 8 }).map((_, j) => (
+                                    {Array.from({ length: 9 }).map((_, j) => (
                                         <TableCell key={j}>
                                             <Skeleton className="h-5 w-full" />
                                         </TableCell>
@@ -312,7 +343,7 @@ export function ProductsTable() {
                             ))
                         ) : products.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                                     Tidak ada data produk ditemukan.
                                 </TableCell>
                             </TableRow>
@@ -321,6 +352,21 @@ export function ProductsTable() {
                                 <TableRow key={product.id}>
                                     <TableCell className="text-muted-foreground">
                                         {(page - 1) * 10 + index + 1}
+                                    </TableCell>
+                                    <TableCell>
+                                        {product.images.length > 0 ? (
+                                            <div className="relative size-10 rounded-md overflow-hidden border">
+                                                <img
+                                                    src={product.images[0].imageUrl}
+                                                    alt={product.name}
+                                                    className="size-full object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="size-10 rounded-md border bg-muted flex items-center justify-center">
+                                                <ImagePlus className="size-4 text-muted-foreground" />
+                                            </div>
+                                        )}
                                     </TableCell>
                                     <TableCell>
                                         <div>
@@ -338,15 +384,15 @@ export function ProductsTable() {
                                             {product.type === "DIGITAL" ? "Digital" : "Fisik"}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-right font-medium">
+                                    <TableCell className="font-medium">
                                         {formatRupiah(product.price)}
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell>
                                         {product.discount
                                             ? formatRupiah(product.discount)
                                             : <span className="text-muted-foreground">—</span>}
                                     </TableCell>
-                                    <TableCell className="text-center">
+                                    <TableCell>
                                         <Badge
                                             variant={product.isActive ? "default" : "secondary"}
                                             className={product.isActive
@@ -356,24 +402,26 @@ export function ProductsTable() {
                                             {product.isActive ? "Aktif" : "Nonaktif"}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-1">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={() => openEditDialog(product)}
-                                            >
-                                                <Pencil className="size-4" />
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => setDeleteProduct(product)}
-                                            >
-                                                <Trash2 className="size-4" />
-                                            </Button>
-                                        </div>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
+                                                    <MoreHorizontalIcon />
+                                                    <span className="sr-only">Open menu</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem className="cursor-pointer" onClick={() => openEditDialog(product)}>
+                                                    <Pencil className="size-4" />
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="cursor-pointer" variant="destructive" onClick={() => setDeleteProduct(product)}>
+                                                    <Trash2 className="size-4" />
+                                                    Hapus
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -382,7 +430,6 @@ export function ProductsTable() {
                 </Table>
             </div>
 
-            {/* Pagination */}
             {meta && meta.totalPages > 1 && (
                 <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
@@ -409,7 +456,6 @@ export function ProductsTable() {
                 </div>
             )}
 
-            {/* Create / Edit Dialog */}
             <Dialog open={formOpen} onOpenChange={setFormOpen}>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
@@ -424,7 +470,6 @@ export function ProductsTable() {
                     </DialogHeader>
 
                     <div className="grid gap-4 py-2">
-                        {/* Name */}
                         <div className="grid gap-2">
                             <label htmlFor="name" className="text-sm font-medium">
                                 Nama Produk <span className="text-destructive">*</span>
@@ -437,7 +482,6 @@ export function ProductsTable() {
                             />
                         </div>
 
-                        {/* Description */}
                         <div className="grid gap-2">
                             <label htmlFor="description" className="text-sm font-medium">
                                 Deskripsi <span className="text-destructive">*</span>
@@ -452,7 +496,6 @@ export function ProductsTable() {
                             />
                         </div>
 
-                        {/* Price & Discount */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <label htmlFor="price" className="text-sm font-medium">
@@ -480,7 +523,6 @@ export function ProductsTable() {
                             </div>
                         </div>
 
-                        {/* Type & Category */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <label className="text-sm font-medium">
@@ -523,7 +565,6 @@ export function ProductsTable() {
                             </div>
                         </div>
 
-                        {/* Stock & Weight (for PHYSICAL) */}
                         {formData.type === "PHYSICAL" && (
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
@@ -553,7 +594,6 @@ export function ProductsTable() {
                             </div>
                         )}
 
-                        {/* File URL (for DIGITAL) */}
                         {formData.type === "DIGITAL" && (
                             <div className="grid gap-2">
                                 <label htmlFor="fileUrl" className="text-sm font-medium">
@@ -568,7 +608,49 @@ export function ProductsTable() {
                             </div>
                         )}
 
-                        {/* Active toggle */}
+                        <div className="grid gap-2">
+                            <label className="text-sm font-medium">Foto Produk</label>
+                            <div className="grid grid-cols-4 gap-3">
+                                {uploadedImages.map((url, i) => (
+                                    <div key={i} className="relative group aspect-square rounded-lg overflow-hidden border">
+                                        <img
+                                            src={url}
+                                            alt={`Product image ${i + 1}`}
+                                            className="size-full object-cover"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(url)}
+                                            className="absolute top-1 right-1 size-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                                        >
+                                            <X className="size-3" />
+                                        </button>
+                                    </div>
+                                ))}
+                                <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-muted-foreground/50 transition-colors">
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg,image/png,image/webp,image/gif"
+                                        multiple
+                                        className="hidden"
+                                        onChange={(e) => handleImageUpload(e.target.files)}
+                                        disabled={uploading}
+                                    />
+                                    {uploading ? (
+                                        <Loader2 className="size-5 text-muted-foreground animate-spin" />
+                                    ) : (
+                                        <ImagePlus className="size-5 text-muted-foreground" />
+                                    )}
+                                    <span className="text-xs text-muted-foreground">
+                                        {uploading ? "Uploading..." : "Tambah"}
+                                    </span>
+                                </label>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Format: JPG, PNG, WebP, GIF. Maks 5MB per file.
+                            </p>
+                        </div>
+
                         <div className="flex items-center gap-2">
                             <input
                                 id="isActive"
@@ -595,7 +677,6 @@ export function ProductsTable() {
                 </DialogContent>
             </Dialog>
 
-            {/* Delete Confirmation */}
             <AlertDialog open={!!deleteProduct} onOpenChange={(open) => !open && setDeleteProduct(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>

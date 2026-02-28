@@ -112,10 +112,18 @@ export async function POST(req: NextRequest) {
                         fileUrl: fileUrl ?? null,
                     },
                 },
+                ...(body.imageUrls?.length > 0 && {
+                    images: {
+                        create: body.imageUrls.map((url: string) => ({
+                            imageUrl: url,
+                        })),
+                    },
+                }),
             },
             include: {
                 category: { select: { id: true, name: true } },
                 detail: true,
+                images: { select: { id: true, imageUrl: true } },
             },
         });
 

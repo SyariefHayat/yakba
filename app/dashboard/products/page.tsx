@@ -7,9 +7,9 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
+import { Toaster } from "@/components/ui/sonner"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Toaster } from "@/components/ui/sonner"
 import { ProductsTable } from "@/components/modules/dashboard/products-table"
 
 export default function ProductsPage() {
