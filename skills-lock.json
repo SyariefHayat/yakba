@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "prd": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "1f3e1f005fc40fda85d250ae906c8ee4f7e8e833e23adfeca6542c19609fd7cd"
+    },
+    "technical-writing": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "0f4fb1976596822509e3ef98546250d89337bce036c99b0bae1f6598fe0a156c"
+    }
+  }
+}
