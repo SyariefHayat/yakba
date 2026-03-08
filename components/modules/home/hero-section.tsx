@@ -17,18 +17,27 @@ import TreeLeft from "../elements/tree-left";
 const HeroSection = () => {
   return (
     <section className="w-full min-h-screen flex flex-col items-center justify-center bg-[#FFD502] overflow-hidden relative">
-      {/* <CloudLeft /> */}
-      {/* <CloudCenter /> */}
-      {/* <CloudRight /> */}
+      <CloudLeft />
+      <CloudCenter />
+      <CloudRight />
 
       {/* <Butterfly /> */}
-      {/* <Circle /> */}
-      {/* <Tree /> */}
-      {/* <TreeLeft /> */}
+      <Circle />
+      <Tree />
+      <TreeLeft />
 
-      {/* <Star className="top-[43%] md:top-[40.5%] lg:top-1/2 lg:left-50" /> */}
-      {/* <Star className="top-[28%] left-13 md:top-[25%] md:left-[25%] lg:top-[29%] lg:left-[30%]" /> */}
-      {/* <Star className="top-[24%] right-10 md:top-[20%] md:right-40 lg:top-[40%] lg:right-68" /> */}
+      <Star
+        delay={1.2}
+        className="top-[43%] md:top-[40.5%] lg:top-1/2 lg:left-50"
+      />
+      <Star
+        delay={1.8}
+        className="top-[28%] left-13 md:top-[25%] md:left-[25%] lg:top-[29%] lg:left-[30%]"
+      />
+      <Star
+        delay={2.4}
+        className="top-[24%] right-10 md:top-[20%] md:right-40 lg:top-[40%] lg:right-68"
+      />
 
       <div className="w-full flex items-center justify-center lg:justify-between mt-20">
         <RightLine />

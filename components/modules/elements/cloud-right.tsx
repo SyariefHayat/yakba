@@ -1,6 +1,30 @@
+"use client";
+
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+
 const CloudRight = () => {
+  const cloudRightRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!cloudRightRef.current) return;
+
+    gsap.set(cloudRightRef.current, {
+      scale: 0,
+      transformOrigin: "center",
+    });
+
+    gsap.to(cloudRightRef.current, {
+      scale: 1,
+      duration: 1,
+      delay: 1.5,
+      ease: "power3.out",
+    });
+  }, []);
+
   return (
     <svg
+      ref={cloudRightRef}
       viewBox="0 0 302 86"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

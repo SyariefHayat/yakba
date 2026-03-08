@@ -20,7 +20,7 @@ const LeftLine = () => {
       strokeDashoffset: 0,
       duration: 1.5,
       ease: "power3.out",
-      delay: 1.3,
+      delay: 1.5,
     });
   });
 

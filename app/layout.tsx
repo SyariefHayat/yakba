@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Geist, Geist_Mono, Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/modules/shared/navbar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -43,6 +44,9 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${mochiBoom.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header>
+          <Navbar />
+        </header>
         {children}
       </body>
     </html>
