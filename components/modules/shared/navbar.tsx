@@ -1,95 +1,66 @@
 "use client";
 
+import gsap from "gsap";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu } from "lucide-react";
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
 
-import { Button } from "@/components/ui/button";
 import { MENU_ITEMS } from "@/lib/constants";
 
 const Navbar = () => {
   const navRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLAnchorElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const menuItemsRef = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const items = menuItemsRef.current.filter(Boolean);
+    if (!navRef.current) return;
 
-      const tl = gsap.timeline({
-        delay: 1,
-        defaults: {
-          duration: 0.5,
-          ease: "power4.out",
-        },
-      });
+    gsap.set(navRef.current, { y: -100, opacity: 0 });
 
-      tl.fromTo(logoRef.current, { y: -30, opacity: 0 }, { y: 0, opacity: 1 })
-        .fromTo(
-          items,
-          { y: -30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.08,
-          },
-        )
-        .fromTo(
-          buttonRef.current,
-          { y: -30, opacity: 0 },
-          { y: 0, opacity: 1 },
-        );
-    }, navRef);
-
-    return () => ctx.revert();
-  }, []);
+    gsap.to(navRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      delay: 2,
+      ease: "power2.out",
+    });
+  }, []); // ← dependency array kosong agar hanya jalan sekali
 
   return (
     <nav
-      ref={navRef}
-      className="w-full flex items-center justify-between p-6 font-medium absolute z-20"
+      ref={navRef} // ← ref dipasang di sini
+      className="w-full flex items-center justify-between px-6 py-4 md:px-10 font-medium absolute z-20"
     >
-      <Link ref={logoRef} href="/">
+      {/* Logo */}
+      <Link href="/">
         <Image
           src="/logo.png"
           alt="Logo"
           width={100}
           height={100}
-          className="w-16 h-16 md:w-20 md:h-20 will-change-transform"
+          className="w-16 h-16 md:w-20 md:h-20"
         />
       </Link>
 
+      {/* Menu Desktop */}
       <ul className="hidden md:flex gap-10 text-[#1A3F26]">
-        {MENU_ITEMS.map((item, index) => (
-          <li
-            key={item.label}
-            ref={(el) => {
-              menuItemsRef.current[index] = el;
-            }}
-            className="text-lg will-change-transform"
-          >
-            <Link href={item.href}>{item.label}</Link>
+        {MENU_ITEMS.map((item) => (
+          <li key={item.label}>
+            <Link
+              href={item.href}
+              className="relative text-lg font-semibold text-[#1A3F26] group"
+            >
+              {item.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E85206] rounded-full transition-all duration-300 group-hover:w-full" />
+            </Link>
           </li>
         ))}
       </ul>
 
-      <Button
-        ref={buttonRef}
-        className="hidden md:block bg-[#1A3F26] text-white text-lg will-change-transform"
-      >
-        <Link href="/contact">Hubungi Kami</Link>
-      </Button>
-
-      <Button
-        variant="outline"
-        size="icon"
-        className="md:hidden text-[#1A3F26]"
-      >
-        <Menu className="h-6 w-6" />
-      </Button>
+      {/* CTA Button Desktop */}
+      <Link href="/contact" className="hidden md:block">
+        <span className="inline-flex items-center gap-2 bg-[#1A3F26] text-white text-base font-bold px-6 py-3 rounded-full">
+          Hubungi Kami
+        </span>
+      </Link>
     </nav>
   );
 };

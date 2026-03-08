@@ -1,8 +1,27 @@
+"use client";
+
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+
 type stoneProps = {
   className?: string;
 };
 
 const Stone = ({ className }: stoneProps) => {
+  const stoneRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!stoneRef.current) return;
+
+    gsap.set(stoneRef.current, { opacity: 0 });
+
+    gsap.to(stoneRef.current, {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 1.5,
+    });
+  });
   return (
     <svg
       viewBox="0 0 40 30"

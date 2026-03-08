@@ -27,15 +27,11 @@ const Text = () => {
 
       // animasi masuk
       gsap.set(letter, {
-        y: 80,
-        opacity: 0,
-        scaleY: 0.8,
+        scaleY: 0,
         transformOrigin: "bottom center",
       });
 
       gsap.to(letter, {
-        y: 0,
-        opacity: 1,
         scaleY: 1,
         duration: 0.7,
         delay: 0.3 + index * 0.12,

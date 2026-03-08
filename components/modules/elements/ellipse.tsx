@@ -1,6 +1,29 @@
+"use client";
+
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+
 const Ellipse = () => {
+  const ellipseRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!ellipseRef.current) return;
+
+    gsap.set(ellipseRef.current, {
+      y: 150,
+    });
+
+    gsap.to(ellipseRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      delay: 1.5,
+      ease: "power2.out",
+    });
+  });
   return (
     <svg
+      ref={ellipseRef}
       width="714"
       height="177"
       viewBox="0 0 714 177"

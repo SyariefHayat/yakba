@@ -1,7 +1,33 @@
+"use client";
+
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+
 const Pool = () => {
+  const poolSmRef = useRef<SVGSVGElement>(null);
+  const poolMdRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const targets = [poolSmRef.current, poolMdRef.current];
+
+    gsap.set(targets, { opacity: 0 });
+
+    gsap.to(targets, {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 1.5,
+    });
+
+    return () => {
+      gsap.killTweensOf(targets);
+    };
+  }, []);
+
   return (
     <>
       <svg
+        ref={poolSmRef}
         width="169"
         height="121"
         viewBox="0 0 169 121"
@@ -28,6 +54,7 @@ const Pool = () => {
       </svg>
 
       <svg
+        ref={poolMdRef}
         width="327"
         height="240"
         viewBox="0 0 327 240"

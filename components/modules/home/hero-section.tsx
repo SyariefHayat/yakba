@@ -45,20 +45,32 @@ const HeroSection = () => {
         <LeftLine />
       </div>
 
-      {/* <Pool /> */}
+      <Pool />
 
-      {/* <Grass className="w-17.25 md:w-25 lg:w-17.25 bottom-65 left-45 md:bottom-70 md:left-100 lg:bottom-10 lg:left-60" /> */}
-      {/* <Grass className="w-17.25 md:w-25 lg:w-17.25 bottom-60 right-5 md:bottom-90 md:right-10 lg:bottom-15 lg:right-60" /> */}
-      {/* <Grass className="w-17.25 md:w-25 lg:w-17.25 bottom-45 right-25 lg:bottom-30 lg:right-30" /> */}
+      <Grass
+        delay={1.5}
+        skewAmount={15}
+        className="w-17.25 md:w-25 lg:w-17.25 bottom-65 left-45 md:bottom-70 md:left-100 lg:bottom-10 lg:left-60"
+      />
+      <Grass
+        delay={1.8}
+        skewAmount={12}
+        className="w-17.25 md:w-25 lg:w-17.25 bottom-60 right-5 md:bottom-90 md:right-10 lg:bottom-15 lg:right-60"
+      />
+      <Grass
+        delay={2.1}
+        skewAmount={18}
+        className="w-17.25 md:w-25 lg:w-17.25 bottom-45 right-25 lg:bottom-30 lg:right-30"
+      />
 
-      {/* <Ellipse /> */}
+      <Ellipse />
 
-      {/* <Stone className="w-10 h-7.5 bottom-23 left-20 lg:bottom-30 lg:left-55" /> */}
-      {/* <Stone className="w-5 h-5 bottom-22 left-18 lg:bottom-28 lg:left-53" /> */}
+      <Stone className="w-10 h-7.5 bottom-23 left-20 lg:bottom-30 lg:left-55" />
+      <Stone className="w-5 h-5 bottom-22 left-18 lg:bottom-28 lg:left-53" />
 
-      {/* <Stone className="w-10 h-7.5 bottom-25 right-20 lg:bottom-10 lg:right-25" /> */}
-      {/* <Stone className="w-5 h-5 bottom-24 right-13 lg:bottom-8.75 lg:right-16.25" /> */}
-      {/* <Stone className="w-8 h-8 bottom-30 right-12 lg:bottom-15.75 lg:right-18.25" /> */}
+      <Stone className="w-10 h-7.5 bottom-25 right-20 lg:bottom-10 lg:right-25" />
+      <Stone className="w-5 h-5 bottom-24 right-13 lg:bottom-8.75 lg:right-16.25" />
+      <Stone className="w-8 h-8 bottom-30 right-12 lg:bottom-15.75 lg:right-18.25" />
     </section>
   );
 };
