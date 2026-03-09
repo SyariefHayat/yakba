@@ -1,8 +1,17 @@
-export default function ProdukPage() {
+import ProductHero from "@/components/modules/product/product-hero";
+import ProductCatalog from "@/components/modules/product/product-catalog";
+import { getAllProducts, getAllCategories } from "@/lib/queries";
+
+export default async function ProdukPage() {
+  const [products, categories] = await Promise.all([
+    getAllProducts(),
+    getAllCategories(),
+  ]);
+
   return (
-    <main className="container mx-auto min-h-screen max-w-4xl p-8">
-      <h1 className="text-3xl font-bold">Katalog Produk</h1>
-      <p className="mt-4 text-gray-700">Halaman daftar produk digital dan fisik.</p>
+    <main className="font-poppins">
+      <ProductHero />
+      <ProductCatalog products={products} categories={categories} />
     </main>
   );
 }
