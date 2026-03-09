@@ -1,8 +1,17 @@
+import MitraHero from "@/components/modules/mitra/mitra-hero";
+import MitraBenefits from "@/components/modules/mitra/mitra-benefits";
+import MitraSteps from "@/components/modules/mitra/mitra-steps";
+import MitraRequirements from "@/components/modules/mitra/mitra-requirements";
+import MitraCTA from "@/components/modules/mitra/mitra-cta";
+
 export default function KemitraanPage() {
   return (
-    <main className="container mx-auto min-h-screen max-w-4xl p-8">
-      <h1 className="text-3xl font-bold">Kemitraan</h1>
-      <p className="mt-4 text-gray-700">Informasi partnership guru dan mitra.</p>
+    <main className="font-poppins">
+      <MitraHero />
+      <MitraBenefits />
+      <MitraSteps />
+      <MitraRequirements />
+      <MitraCTA />
     </main>
   );
 }
