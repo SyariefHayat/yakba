@@ -1,7 +1,118 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 const TreeLeft = () => {
+  const treeLeftRef = useRef<SVGSVGElement>(null);
+  const treeRightRef = useRef<SVGSVGElement>(null);
+
+  const startIdleAnimation = (
+    el: SVGSVGElement,
+    rotation: number,
+    duration: number,
+    delay = 0,
+  ) => {
+    gsap.to(el, {
+      rotation,
+      transformOrigin: "bottom center",
+      duration,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay,
+    });
+  };
+
+  const handleMouseEnter = (
+    el: SVGSVGElement,
+    rotation: number,
+    duration: number,
+    delay = 0,
+  ) => {
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      rotation: rotation * 4,
+      transformOrigin: "bottom center",
+      duration: 0.3,
+      ease: "power2.out",
+      onComplete: () => startIdleAnimation(el, rotation, duration, delay),
+    });
+  };
+
+  const handleMouseLeave = (
+    el: SVGSVGElement,
+    rotation: number,
+    duration: number,
+    delay = 0,
+  ) => {
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      rotation: 0,
+      transformOrigin: "bottom center",
+      duration: 0.6,
+      ease: "elastic.out(1, 0.5)",
+      onComplete: () => startIdleAnimation(el, rotation, duration, delay),
+    });
+  };
+
+  useEffect(() => {
+    const left = treeLeftRef.current!;
+    const right = treeRightRef.current!;
+
+    const onEnterLeft = () => handleMouseEnter(left, 3, 1.5);
+    const onLeaveLeft = () => handleMouseLeave(left, 3, 2);
+    const onEnterRight = () => handleMouseEnter(right, -3, 1.8, 0.3);
+    const onLeaveRight = () => handleMouseLeave(right, -3, 2.5, 0.5);
+
+    // Animasi muncul (Scale 0 ke 1) untuk Pohon Kiri
+    gsap.fromTo(
+      left,
+      { scale: 0, transformOrigin: "bottom center" },
+      {
+        scale: 1,
+        duration: 1,
+        delay: 1.5,
+        ease: "elastic.out(1, 0.75)", // Memberikan efek memantul sedikit saat tumbuh
+        onComplete: () => {
+          // Baru jalankan animasi angin & aktifkan hover setelah pohon tumbuh
+          startIdleAnimation(left, 3, 2);
+          left.addEventListener("mouseenter", onEnterLeft);
+          left.addEventListener("mouseleave", onLeaveLeft);
+        },
+      },
+    );
+
+    // Animasi muncul (Scale 0 ke 1) untuk Pohon Kanan
+    gsap.fromTo(
+      right,
+      { scale: 0, transformOrigin: "bottom center" },
+      {
+        scale: 1,
+        duration: 1,
+        delay: 1.6, // Sengaja di-delay sedikit dari pohon kiri agar terlihat lebih natural
+        ease: "elastic.out(1, 0.75)",
+        onComplete: () => {
+          startIdleAnimation(right, -3, 2.5, 0.5);
+          right.addEventListener("mouseenter", onEnterRight);
+          right.addEventListener("mouseleave", onLeaveRight);
+        },
+      },
+    );
+
+    return () => {
+      gsap.killTweensOf(left);
+      gsap.killTweensOf(right);
+      left.removeEventListener("mouseenter", onEnterLeft);
+      left.removeEventListener("mouseleave", onLeaveLeft);
+      right.removeEventListener("mouseenter", onEnterRight);
+      right.removeEventListener("mouseleave", onLeaveRight);
+    };
+  }, []);
   return (
     <div className="lg:hidden w-25 md:w-45.5 md:h-35.5 flex items-end -space-x-5 absolute top-68 -left-2 md:top-90 md:left-5 lg:top-38 lg:right-15">
       <svg
+        ref={treeLeftRef}
         width="100"
         height="140"
         viewBox="0 0 100 140"
@@ -23,6 +134,7 @@ const TreeLeft = () => {
       </svg>
 
       <svg
+        ref={treeRightRef}
         width="100"
         height="117"
         viewBox="0 0 100 117"
