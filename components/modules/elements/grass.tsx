@@ -3,45 +3,74 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-type grassProps = {
+type GrassProps = {
   className?: string;
   delay?: number;
   skewAmount?: number;
 };
 
-const Grass = ({ className, delay = 1.5, skewAmount = 15 }: grassProps) => {
+const Grass = ({ className, delay = 1.5, skewAmount = 15 }: GrassProps) => {
   const grassRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
-    const tl = gsap.timeline({ delay });
+  const startIdleAnimation = (el: SVGSVGElement) => {
+    gsap.to(el, {
+      skewX: skewAmount,
+      transformOrigin: "bottom center",
+      duration: 1.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+  };
 
-    // Muncul dari scale 0
-    tl.fromTo(
-      grassRef.current,
-      { scale: 0 },
+  const handleMouseEnter = (el: SVGSVGElement) => {
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      skewX: skewAmount * 2,
+      transformOrigin: "bottom center",
+      duration: 0.3,
+      ease: "power2.out",
+      onComplete: () => startIdleAnimation(el),
+    });
+  };
+
+  const handleMouseLeave = (el: SVGSVGElement) => {
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      skewX: 0,
+      transformOrigin: "bottom center",
+      duration: 0.6,
+      ease: "elastic.out(1, 0.5)",
+      onComplete: () => startIdleAnimation(el),
+    });
+  };
+
+  useEffect(() => {
+    const el = grassRef.current!;
+
+    const onEnter = () => handleMouseEnter(el);
+    const onLeave = () => handleMouseLeave(el);
+
+    gsap.fromTo(
+      el,
+      { scale: 0, transformOrigin: "bottom center" },
       {
         scale: 1,
-        transformOrigin: "bottom center",
         duration: 0.4,
+        delay,
         ease: "back.out(1.7)",
-      },
-    )
-      // Setelah muncul, baru animasi angin berjalan
-      .fromTo(
-        grassRef.current,
-        { skewX: -skewAmount },
-        {
-          skewX: skewAmount,
-          transformOrigin: "bottom center",
-          duration: 1.8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
+        onComplete: () => {
+          startIdleAnimation(el);
+          el.addEventListener("mouseenter", onEnter);
+          el.addEventListener("mouseleave", onLeave);
         },
-      );
+      },
+    );
 
     return () => {
-      tl.kill();
+      gsap.killTweensOf(el);
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
     };
   }, [delay, skewAmount]);
 
@@ -51,7 +80,7 @@ const Grass = ({ className, delay = 1.5, skewAmount = 15 }: grassProps) => {
       viewBox="0 0 69 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`absolute ${className}`}
+      className={`absolute cursor-pointer ${className}`}
       style={{ scale: 0 }}
     >
       <path
