@@ -1,8 +1,19 @@
+import AboutHero from "@/components/modules/about/about-hero";
+import AboutStory from "@/components/modules/about/about-story";
+import AboutVision from "@/components/modules/about/about-vision";
+import AboutMethod from "@/components/modules/about/about-method";
+import AboutValues from "@/components/modules/about/about-values";
+import AboutCTA from "@/components/modules/about/about-cta";
+
 export default function TentangPage() {
   return (
-    <main className="container mx-auto min-h-screen max-w-4xl p-8">
-      <h1 className="text-3xl font-bold">Tentang Yakba</h1>
-      <p className="mt-4 text-gray-700">Profil, misi, dan diferensiasi Yakba.</p>
+    <main className="font-poppins">
+      <AboutHero />
+      <AboutStory />
+      <AboutVision />
+      <AboutMethod />
+      <AboutValues />
+      <AboutCTA />
     </main>
   );
 }
