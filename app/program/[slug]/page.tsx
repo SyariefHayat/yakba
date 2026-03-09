@@ -1,14 +1,37 @@
-export default async function ProgramDetailPage({
-  params,
-}: {
+import { getProgramBySlug } from "@/lib/queries";
+import ProgramDetail from "@/components/modules/program/program-detail";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+interface Props {
   params: Promise<{ slug: string }>;
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const program = await getProgramBySlug(slug);
+
+  if (!program) {
+    return { title: "Program Tidak Ditemukan | Yakba Learning Center" };
+  }
+
+  return {
+    title: `${program.seo?.metaTitle || program.name} | Yakba Learning Center`,
+    description: program.seo?.metaDescription || `Program ${program.name} untuk usia ${program.targetAgeRange}`,
+  };
+}
+
+export default async function ProgramDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const program = await getProgramBySlug(slug);
+
+  if (!program) {
+    notFound();
+  }
 
   return (
-    <main className="container mx-auto min-h-screen max-w-4xl p-8">
-      <h1 className="text-3xl font-bold">Detail Program</h1>
-      <p className="mt-4 text-gray-700">Slug program: {slug}</p>
+    <main className="font-poppins">
+      <ProgramDetail program={program} />
     </main>
   );
 }
