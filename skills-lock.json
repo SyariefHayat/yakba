@@ -15,6 +15,11 @@
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "0f4fb1976596822509e3ef98546250d89337bce036c99b0bae1f6598fe0a156c"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
     }
   }
 }
