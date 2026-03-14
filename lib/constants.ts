@@ -5,3 +5,30 @@ export const MENU_ITEMS = [
   { label: "Program", href: "/program" },
   { label: "Mitra", href: "/mitra" },
 ] as const;
+
+export const FEATURES_ITEMS = [
+  {
+    id: "interactive-learning",
+    title: "Belajar Interaktif",
+    description:
+      "Belajar aktif yang menumbuhkan rasa ingin tahu dan percaya diri.",
+    imageAlt: "Ilustrasi belajar interaktif",
+    isReverse: false,
+  },
+  {
+    id: "islamic-curriculum",
+    title: "Kurikulum Islami & Bahasa Arab",
+    description:
+      "Pembelajaran nilai Islam dan Bahasa Arab sejak dini untuk membentuk akhlak dan dasar berbahasa anak.",
+    imageAlt: "Ilustrasi kurikulum Islami dan Bahasa Arab",
+    isReverse: true,
+  },
+  {
+    id: "flexible-learning",
+    title: "Fleksibel & Terukur",
+    description:
+      "Pilihan kelas online dan offline dengan perkembangan anak yang nyata dan terpantau.",
+    imageAlt: "Ilustrasi pembelajaran fleksibel",
+    isReverse: false,
+  },
+];

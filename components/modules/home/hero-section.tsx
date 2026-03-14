@@ -23,7 +23,11 @@ const HeroSection = () => {
 
       {/* <Butterfly /> */}
       <Circle />
-      <Tree />
+      <Tree
+        side="right"
+        size="sm"
+        className="absolute top-68 -right-2 md:top-90 md:right-5 lg:top-33 lg:right-15"
+      />
       <TreeLeft />
 
       <Star
