@@ -19,7 +19,7 @@ const FeatureSection = () => {
               }`}
             >
               <div className="w-[35%] flex flex-col items-start justify-center gap-5">
-                <h3 id={`feature-${id}`} className="font-mochi text-5xl">
+                <h3 id={`feature-${id}`} className="font-mochi text-4xl">
                   {title}
                 </h3>
                 <p className="text-black text-lg leading-relaxed">

@@ -1,3 +1,5 @@
+import { title } from "process";
+
 export const MENU_ITEMS = [
   { label: "Beranda", href: "/" },
   { label: "Tentang Kami", href: "/about" },
@@ -30,5 +32,24 @@ export const FEATURES_ITEMS = [
       "Pilihan kelas online dan offline dengan perkembangan anak yang nyata dan terpantau.",
     imageAlt: "Ilustrasi pembelajaran fleksibel",
     isReverse: false,
+  },
+];
+
+export const PROGRAM_ITEMS = [
+  {
+    id: "kreativitas-seni",
+    title: "Kreativitas Seni",
+    description:
+      "Menggambar, melukis, membuat prakarya untuk mengasah kreativitas anak.",
+  },
+  {
+    id: "belajar-mengaji",
+    title: "Belajar Mengaji",
+    description: "Program intensif mengaji dengan metode tahsin dan tajwid.",
+  },
+  {
+    id: "kelas-bahasa",
+    title: "Kelas Bahasa",
+    description: "Belajar bahasa asing dengan pendekatan permainan interaktif.",
   },
 ];
