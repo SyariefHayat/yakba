@@ -53,3 +53,38 @@ export const PROGRAM_ITEMS = [
     description: "Belajar bahasa asing dengan pendekatan permainan interaktif.",
   },
 ];
+
+export const PRODUCT_ITEMS = [
+  {
+    id: "buku-mewarnai",
+    title: "Buku Mewarnai",
+    description:
+      "Buku mewarnai islami yang mengajarkan huruf hijaiyah, doa harian, dan kisah nabi melalui aktivitas kreatif.",
+    icon: "🎨",
+    color: "#FF6B6B",
+  },
+  {
+    id: "video-doa",
+    title: "Video Doa-Doa",
+    description:
+      "Koleksi video animasi doa harian anak dengan visualisasi menarik dan pengucapan yang mudah diikuti.",
+    icon: "🎬",
+    color: "#0474BE",
+  },
+  {
+    id: "merch-yakba",
+    title: "Merch Yakba",
+    description:
+      "Merchandise resmi Yakba — kaos, topi, dan tas eksklusif dengan desain edukatif dan islami.",
+    icon: "👕",
+    color: "#E85206",
+  },
+  {
+    id: "flashcard-hijaiyah",
+    title: "Flashcard Hijaiyah",
+    description:
+      "Kartu belajar huruf hijaiyah interaktif yang membantu anak mengenal dan menghafal huruf Arab.",
+    icon: "🃏",
+    color: "#1A9F4A",
+  },
+];

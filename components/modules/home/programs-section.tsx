@@ -3,7 +3,7 @@ import { PROGRAM_ITEMS } from "@/lib/constants";
 
 const ProgramSection = () => {
   return (
-    <section aria-labelledby="program-heading" className="px-10 py-20">
+    <section aria-labelledby="program-heading" className="px-10 pt-20">
       <div className="flex items-center justify-between gap-10">
         <h2
           id="program-heading"
@@ -18,7 +18,7 @@ const ProgramSection = () => {
         </p>
       </div>
 
-      <ul className="w-full my-20 flex items-stretch justify-between gap-10">
+      <ul className="w-full mt-20 flex items-stretch justify-between gap-10">
         {PROGRAM_ITEMS.map(({ id, title, description }) => (
           <li key={id} className="flex-1">
             <article
