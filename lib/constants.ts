@@ -88,3 +88,50 @@ export const PRODUCT_ITEMS = [
     color: "#1A9F4A",
   },
 ];
+
+export const FOOTER_ITEMS = [
+  {
+    title: "Navigasi",
+    links: [
+      { label: "Beranda", href: "/" },
+      { label: "Tentang Kami", href: "/about" },
+      { label: "Program", href: "/programs" },
+      { label: "Hubungi Kami", href: "/contact" },
+    ],
+  },
+  {
+    title: "Program",
+    links: [
+      { label: "Kreativitas Seni", href: "/programs/kreativitas-seni" },
+      { label: "Belajar Mengaji", href: "/programs/belajar-mengaji" },
+      { label: "Kelas Bahasa", href: "/programs/kelas-bahasa" },
+      { label: "Lihat Semua", href: "/programs" },
+    ],
+  },
+  {
+    title: "Lainnya",
+    links: [
+      { label: "Artikel", href: "/article" },
+      { label: "Galeri", href: "/gallery" },
+      { label: "Fasilitas", href: "/facilities" },
+      { label: "Tentor", href: "/tentor" },
+    ],
+  },
+  {
+    title: "Social Media",
+    isSocialMedia: true,
+    links: [
+      { label: "WhatsApp", href: "#", icon: "/wa-icon.png" },
+      { label: "TikTok", href: "#", icon: "/tiktok-icon.png" },
+      { label: "Instagram", href: "#", icon: "/ig-icon.png" },
+      { label: "YouTube", href: "#", icon: "/yt-icon.png" },
+      { label: "Facebook", href: "#", icon: "/fb-icon.png" },
+      { label: "Lemon8", href: "#", icon: "/lemon8-icon.png" },
+    ],
+  },
+];
+
+export const BOTTOM_LINKS = [
+  { label: "Syarat & Ketentuan", href: "/terms" },
+  { label: "Kebijakan Privasi", href: "/privacy" },
+];
