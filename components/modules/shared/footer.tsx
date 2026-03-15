@@ -5,26 +5,19 @@ import Link from "next/link";
 interface FooterLink {
   label: string;
   href: string;
-  icon?: string; // Optional icon untuk social media
+  icon?: string;
 }
 
 interface FooterColumn {
   title: string;
   links: FooterLink[];
-  isSocialMedia?: boolean; // Flag untuk menandai kolom social media
+  isSocialMedia?: boolean;
 }
 
 const Footer = () => {
   return (
-    <footer className="px-10 pb-20">
-      <div
-        className="
-                w-[90%] md:w-full 
-                grid grid-cols-2 md:grid-cols-4
-                items-start justify-between 
-                gap-8 md:gap-0 pl-7 lg:pl-30
-            "
-      >
+    <footer className="p-10">
+      <div className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 md:gap-0">
         {/* All Columns (including Social Media) */}
         {FOOTER_ITEMS.map((column, index) => (
           <FooterColumn key={index} {...column} />
@@ -32,16 +25,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div
-        className="
-                w-[90%]
-                mt-10 lg:mt-15 mx-auto 
-                flex flex-col md:flex-row 
-                items-center justify-center md:justify-between 
-                gap-2 md:gap-0
-                font-poppins text-xs md:text-sm text-center
-            "
-      >
+      <div className="w-full mt-10 lg:mt-15 mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 md:gap-0 font-poppins text-xs md:text-sm text-center">
         <p>© 2025 Yakba Learning Center. All rights reserved.</p>
         <div className="flex gap-4">
           {BOTTOM_LINKS.map((link, index) => (
@@ -65,8 +49,8 @@ const FooterColumn = ({
   isSocialMedia = false,
 }: FooterColumn) => {
   return (
-    <div className="w-full">
-      <h3 className="text-xl md:text-2xl font-mochi text-[#1F3B5A]">{title}</h3>
+    <div className="w-fit">
+      <h3 className="text-4xl font-mochi">{title}</h3>
 
       {isSocialMedia ? (
         // Render Social Media Icons

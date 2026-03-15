@@ -8,7 +8,7 @@ const ProductSection = () => {
       <div className="flex items-center justify-between gap-10">
         <h2
           id="product-heading"
-          className="w-1/2 font-mochi text-6xl leading-tight"
+          className="w-[40%] font-mochi text-5xl leading-tight"
         >
           Disayangi oleh orang tua, digemari oleh anak-anak
         </h2>
@@ -18,12 +18,11 @@ const ProductSection = () => {
             kembang anak — dari buku mewarnai hingga video pembelajaran
             interaktif.
           </p>
-          <Button
-            className="bg-green-600 hover:bg-green-700 transition-colors text-white"
-            render={<Link href="/product" />}
-          >
-            Lihat Semua Produk →
-          </Button>
+          <Link href="/product">
+            <Button className="bg-green-600 hover:bg-green-700 transition-colors text-white cursor-pointer">
+              Lihat Semua Produk →
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -42,18 +41,20 @@ const ProductSection = () => {
               </figure>
 
               <div className="flex flex-col gap-3 flex-1">
-                <h3
+                <h4
                   id={`product-${id}`}
-                  className="font-mochi text-4xl leading-tight"
+                  className="font-mochi text-3xl leading-tight"
                 >
                   {title}
-                </h3>
+                </h4>
                 <p className="text-gray-600 leading-relaxed flex-1">
                   {description}
                 </p>
-                <Button className="w-fit bg-green-600 hover:bg-green-700 transition-colors text-white">
-                  Lihat Produk
-                </Button>
+                <Link href="#">
+                  <Button className="w-fit bg-green-600 hover:bg-green-700 transition-colors text-white cursor-pointer">
+                    Lihat Produk
+                  </Button>
+                </Link>
               </div>
             </article>
           </li>

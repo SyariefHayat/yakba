@@ -1,5 +1,3 @@
-import { title } from "process";
-
 export const MENU_ITEMS = [
   { label: "Beranda", href: "/" },
   { label: "Tentang Kami", href: "/about" },
