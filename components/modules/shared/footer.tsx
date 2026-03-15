@@ -16,16 +16,16 @@ interface FooterColumn {
 
 const Footer = () => {
   return (
-    <footer className="p-10">
-      <div className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 md:gap-0">
-        {/* All Columns (including Social Media) */}
+    <footer className="px-5 sm:px-10 pb-6 sm:pb-10">
+      {/* Columns */}
+      <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-nowrap md:justify-between gap-8 md:gap-4">
         {FOOTER_ITEMS.map((column, index) => (
           <FooterColumn key={index} {...column} />
         ))}
       </div>
 
       {/* Bottom Bar */}
-      <div className="w-full mt-10 lg:mt-15 mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 md:gap-0 font-poppins text-xs md:text-sm text-center">
+      <div className="w-full mt-8 sm:mt-10 lg:mt-15 mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 md:gap-0 font-poppins text-xs md:text-sm text-center">
         <p>© 2025 Yakba Learning Center. All rights reserved.</p>
         <div className="flex gap-4">
           {BOTTOM_LINKS.map((link, index) => (
@@ -50,11 +50,10 @@ const FooterColumn = ({
 }: FooterColumn) => {
   return (
     <div className="w-fit">
-      <h3 className="text-4xl font-mochi">{title}</h3>
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-mochi">{title}</h3>
 
       {isSocialMedia ? (
-        // Render Social Media Icons
-        <div className="w-40 mt-2 grid grid-cols-3 gap-5 md:gap-4">
+        <div className="w-36 sm:w-40 mt-2 grid grid-cols-3 gap-4 md:gap-4">
           {links.map((link, index) => (
             <Link
               key={index}
@@ -66,14 +65,17 @@ const FooterColumn = ({
                 alt={link.label}
                 width={100}
                 height={100}
-                className={`${link.label == "YouTube" ? "w-8 h-7 mt-0.75 md:w-10 md:h-8 md:mt-1.5" : "w-8 h-8 md:w-10 md:h-10"}`}
+                className={`${
+                  link.label === "YouTube"
+                    ? "w-7 h-6 mt-0.5 md:w-8 md:h-7 md:mt-0.75 lg:w-10 lg:h-8 lg:mt-1.5"
+                    : "w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10"
+                }`}
               />
             </Link>
           ))}
         </div>
       ) : (
-        // Render Regular Links
-        <ul className="text-base md:text-lg font-poppins space-y-1 md:space-y-2 mt-2">
+        <ul className="text-sm sm:text-base md:text-lg font-poppins space-y-1 md:space-y-2 mt-2">
           {links.map((link, index) => (
             <li key={index}>
               <Link href={link.href} className="hover:underline cursor-pointer">
