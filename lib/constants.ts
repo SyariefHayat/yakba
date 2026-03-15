@@ -77,14 +77,14 @@ export const PRODUCT_ITEMS = [
     icon: "👕",
     color: "#E85206",
   },
-  {
-    id: "flashcard-hijaiyah",
-    title: "Flashcard Hijaiyah",
-    description:
-      "Kartu belajar huruf hijaiyah interaktif yang membantu anak mengenal dan menghafal huruf Arab.",
-    icon: "🃏",
-    color: "#1A9F4A",
-  },
+  // {
+  //   id: "flashcard-hijaiyah",
+  //   title: "Flashcard Hijaiyah",
+  //   description:
+  //     "Kartu belajar huruf hijaiyah interaktif yang membantu anak mengenal dan menghafal huruf Arab.",
+  //   icon: "🃏",
+  //   color: "#1A9F4A",
+  // },
 ];
 
 export const FOOTER_ITEMS = [
