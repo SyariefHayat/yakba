@@ -3,7 +3,11 @@
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 
-const Circle = () => {
+interface CircleProps {
+  className?: string;
+}
+
+const Circle = ({ className = "" }: CircleProps) => {
   const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
@@ -21,6 +25,7 @@ const Circle = () => {
       ease: "power3.out",
     });
   });
+
   return (
     <svg
       width="270"
@@ -28,7 +33,7 @@ const Circle = () => {
       viewBox="0 0 270 270"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute w-50 md:w-67.5 top-38 left-1/3 md:top-60 md:left-[38%] lg:top-40 lg:left-[40%]"
+      className={`${className}`}
     >
       <circle ref={circleRef} cx="100" cy="100" r="100" fill="white" />
     </svg>

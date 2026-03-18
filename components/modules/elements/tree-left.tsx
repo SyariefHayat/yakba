@@ -110,7 +110,7 @@ const TreeLeft = () => {
     };
   }, []);
   return (
-    <div className="lg:hidden w-25 md:w-45.5 md:h-35.5 flex items-end -space-x-5 absolute top-68 -left-2 md:top-90 md:left-5 lg:top-38 lg:right-15">
+    <div className="lg:hidden w-25 md:w-45.5 md:h-35.5 flex items-end -space-x-5 absolute top-55 -left-2 md:top-90 md:left-5 lg:top-38 lg:right-15">
       <svg
         ref={treeLeftRef}
         width="100"

@@ -1,19 +1,19 @@
+// elements/cloud-center.tsx
 "use client";
 
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 
-const CloudCenter = () => {
+interface CloudCenterProps {
+  className?: string;
+}
+
+const CloudCenter = ({ className = "" }: CloudCenterProps) => {
   const cloudCenterRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (!cloudCenterRef.current) return;
-
-    gsap.set(cloudCenterRef.current, {
-      scale: 0,
-      transformOrigin: "center",
-    });
-
+    gsap.set(cloudCenterRef.current, { scale: 0, transformOrigin: "center" });
     gsap.to(cloudCenterRef.current, {
       scale: 1,
       duration: 1,
@@ -28,7 +28,7 @@ const CloudCenter = () => {
       viewBox="0 0 147 58"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute w-30 md:w-36.75 top-33 left-10 md:left-auto lg:top-32 lg:right-[28%]"
+      className={`will-change-transform ${className}`}
     >
       <path
         fillRule="evenodd"

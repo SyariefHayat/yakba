@@ -1,3 +1,4 @@
+// elements/tree.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -9,7 +10,7 @@ type TreeProps = {
   className?: string;
 };
 
-const Tree = ({ side, size = "lg", className }: TreeProps) => {
+const Tree = ({ side, size = "lg", className = "" }: TreeProps) => {
   const treeLeftRef = useRef<SVGSVGElement>(null);
   const treeRightRef = useRef<SVGSVGElement>(null);
 
@@ -113,42 +114,14 @@ const Tree = ({ side, size = "lg", className }: TreeProps) => {
     };
   }, []);
 
-  const positionClass =
-    className ??
-    `absolute -bottom-1 ${side === "right" ? "-right-5" : "-left-5"}`;
+  // ── SM Trees (sama persis dengan TreeLeft) ───────────────────────────
 
-  // ── SVG Kecil (HeroSection) ──────────────────────────────────────────
-
-  const TreeShortSm = (
-    <svg
-      ref={side === "right" ? treeLeftRef : treeRightRef}
-      width="80"
-      height="117"
-      viewBox="0 0 100 117"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="cursor-pointer"
-    >
-      <rect x="38" y="83" width="23" height="34" fill="#123608" />
-      <circle cx="50" cy="50" r="50" fill="#023719" />
-      <path
-        d="M18 34C18 34 18.5475 39.8323 22.2737 39.9771C26.1123 40.1262 27.1579 34 27.1579 34C27.1579 34 27.494 39.5632 31.1263 39.9771C35.1077 40.4307 36.9263 34 36.9263 34C36.9263 34 37.7305 39.7667 41.5053 39.9771C45.4609 40.1975 47 34 47 34"
-        stroke="#159536"
-        strokeWidth="3"
-      />
-      <path
-        d="M40 62C40 62 40.5475 67.8323 44.2737 67.9771C48.1123 68.1262 49.1579 62 49.1579 62C49.1579 62 49.494 67.5632 53.1263 67.9771C57.1077 68.4307 58.9263 62 58.9263 62C58.9263 62 59.7305 67.7667 63.5053 67.9771C67.4609 68.1975 69 62 69 62"
-        stroke="#159536"
-        strokeWidth="3"
-      />
-    </svg>
-  );
-
+  // Pohon tinggi (kiri dalam pair)
   const TreeTallSm = (
     <svg
-      ref={side === "right" ? treeRightRef : treeLeftRef}
-      width="80"
-      height="140"
+      ref={treeLeftRef}
+      width="60"
+      height="84"
       viewBox="0 0 100 140"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +142,33 @@ const Tree = ({ side, size = "lg", className }: TreeProps) => {
     </svg>
   );
 
-  // ── SVG Besar (FeatureSection) ───────────────────────────────────────
+  // Pohon pendek (kanan dalam pair)
+  const TreeShortSm = (
+    <svg
+      ref={treeRightRef}
+      width="60"
+      height="70"
+      viewBox="0 0 100 117"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="cursor-pointer"
+    >
+      <rect x="38" y="83" width="23" height="34" fill="#123608" />
+      <circle cx="50" cy="50" r="50" fill="#023719" />
+      <path
+        d="M18 34C18 34 18.5475 39.8323 22.2737 39.9771C26.1123 40.1262 27.1579 34 27.1579 34C27.1579 34 27.494 39.5632 31.1263 39.9771C35.1077 40.4307 36.9263 34 36.9263 34C36.9263 34 37.7305 39.7667 41.5053 39.9771C45.4609 40.1975 47 34 47 34"
+        stroke="#159536"
+        strokeWidth="3"
+      />
+      <path
+        d="M40 62C40 62 40.5475 67.8323 44.2737 67.9771C48.1123 68.1262 49.1579 62 49.1579 62C49.1579 62 49.494 67.5632 53.1263 67.9771C57.1077 68.4307 58.9263 62 58.9263 62C58.9263 62 59.7305 67.7667 63.5053 67.9771C67.4609 68.1975 69 62 69 62"
+        stroke="#159536"
+        strokeWidth="3"
+      />
+    </svg>
+  );
+
+  // ── LG Trees ─────────────────────────────────────────────────────────
 
   const TreeShortLg = (
     <svg
@@ -234,8 +233,9 @@ const Tree = ({ side, size = "lg", className }: TreeProps) => {
   );
 
   return (
-    <div className={`flex items-end -space-x-5 ${positionClass}`}>
+    <div className={`flex items-end -space-x-5 ${className}`}>
       {size === "sm" ? (
+        // sm: urutan selalu TallSm (kiri) + ShortSm (kanan), pair tidak flip
         <>
           {TreeShortSm}
           {TreeTallSm}

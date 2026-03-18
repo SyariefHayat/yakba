@@ -3,16 +3,17 @@
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 
-const Ellipse = () => {
+interface EllipseProps {
+  className?: string;
+}
+
+const Ellipse = ({ className = "" }: EllipseProps) => {
   const ellipseRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (!ellipseRef.current) return;
 
-    gsap.set(ellipseRef.current, {
-      y: 150,
-    });
-
+    gsap.set(ellipseRef.current, { y: 150 });
     gsap.to(ellipseRef.current, {
       y: 0,
       opacity: 1,
@@ -20,16 +21,19 @@ const Ellipse = () => {
       delay: 1.5,
       ease: "power2.out",
     });
-  });
+
+    return () => {
+      gsap.killTweensOf(ellipseRef.current);
+    };
+  }, []); // ← fix: tambahkan dependency array
+
   return (
     <svg
       ref={ellipseRef}
-      width="714"
-      height="177"
       viewBox="0 0 714 177"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute w-100 md:w-178.5 -bottom-15 md:-bottom-10"
+      className={className}
     >
       <path
         d="M189.376 31.8818C318.557 -7.37902 475.8 -0.282822 596.112 60.8701C638.157 82.2403 675.648 111.047 700.657 149.245H13.1172C49.8116 92.1026 123.687 51.8465 189.376 31.8818Z"

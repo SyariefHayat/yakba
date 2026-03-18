@@ -16,7 +16,7 @@ const Star = ({ className, delay = 1.5 }: starProps) => {
 
     tl.fromTo(
       starRef.current,
-      { scale: 0 },
+      { scale: 0, transformOrigin: "center center" },
       { scale: 1, duration: 0.4, ease: "back.out(1.7)" },
     ).to(starRef.current, {
       scale: 0,

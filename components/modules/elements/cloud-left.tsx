@@ -1,33 +1,33 @@
+// elements/cloud-left.tsx
 "use client";
 
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 
-const CloudLeft = () => {
+interface CloudLeftProps {
+  className?: string;
+}
+
+const CloudLeft = ({ className = "" }: CloudLeftProps) => {
   const cloudRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (!cloudRef.current) return;
-
-    gsap.set(cloudRef.current, {
-      scale: 0,
-      transformOrigin: "center",
-    });
-
+    gsap.set(cloudRef.current, { scale: 0, transformOrigin: "center" });
     gsap.to(cloudRef.current, {
       scale: 1,
       duration: 1,
       delay: 1.5,
       ease: "power3.out",
     });
-  });
+  }, []);
 
   return (
     <svg
       ref={cloudRef}
       viewBox="0 0 239 93"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute w-40 md:w-60 top-8 left-0 md:left-13 md:top-10 lg:left-45 will-change-transform"
+      className={`will-change-transform ${className}`}
     >
       <path
         fillRule="evenodd"
