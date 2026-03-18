@@ -6,112 +6,106 @@ import CloudLeft from "../elements/cloud-left";
 import CloudRight from "../elements/cloud-right";
 import CloudCenter from "../elements/cloud-center";
 import Star from "../elements/star";
+import RightLine from "../elements/right-line";
+import LeftLine from "../elements/left-line";
+import Circle from "../elements/circle";
+import Tree from "../elements/tree";
+import Pool from "../elements/pool";
+import Grass from "../elements/grass";
+import Ellipse from "../elements/ellipse";
+import Stone from "../elements/stone";
 
 const AboutHero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 });
+    if (!titleRef.current) return;
 
-    if (badgeRef.current) {
-      tl.fromTo(
-        badgeRef.current,
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }
-      );
-    }
-
-    if (titleRef.current) {
-      tl.fromTo(
-        titleRef.current,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-        "-=0.2"
-      );
-    }
-
-    if (subtitleRef.current) {
-      tl.fromTo(
-        subtitleRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-        "-=0.3"
-      );
-    }
+    gsap.fromTo(
+      titleRef.current,
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, delay: 0.3, ease: "power3.out" },
+    );
 
     return () => {
-      tl.kill();
+      gsap.killTweensOf(titleRef.current);
     };
   }, []);
 
   return (
-    <section className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-[#FFD502] overflow-hidden relative px-6 py-24 md:py-32">
-      <CloudLeft />
-      <CloudCenter />
-      <CloudRight />
+    <section className="w-full min-h-screen flex flex-col items-center justify-center bg-[#FFD502] overflow-hidden relative">
+      <CloudLeft className="absolute w-[42vw] md:w-60 top-8 left-0 md:left-[5%] md:top-10 lg:left-[12%]" />
+      <CloudRight className="absolute w-[52vw] md:w-75.5 top-15 -right-[1%] md:top-10 md:-right-[3%]" />
+      <CloudCenter className="absolute w-[32vw] md:w-36.75 top-33 -left-[8%] md:left-auto lg:top-32 lg:right-[28%]" />
+
+      <Circle className="absolute w-[50vw] lg:w-[20vw] top-[15%] md:top-[25%] lg:top-[18%] left-[33%] md:left-[30%] lg:left-[38%]" />
 
       <Star
-        delay={1.0}
-        className="top-[20%] left-[10%] md:top-[25%] md:left-[20%]"
+        delay={1.2}
+        className="top-[15%] left-[30%] md:top-[24%] md:left-[32%] lg:top-[60%] lg:left-[25%]"
       />
       <Star
-        delay={1.6}
-        className="top-[15%] right-[8%] md:top-[20%] md:right-[15%]"
+        delay={1.8}
+        className="top-[28%] left-[10%] md:top-[37%] md:left-[28%] lg:top-[25%] lg:left-[30%]"
       />
       <Star
-        delay={2.2}
-        className="bottom-[25%] left-[5%] md:bottom-[30%] md:left-[12%]"
-      />
-      <Star
-        delay={2.8}
-        className="bottom-[20%] right-[12%] md:bottom-[25%] md:right-[20%]"
+        delay={2.4}
+        className="top-[24%] right-[12%] md:top-[32%] md:right-[27%] lg:top-[40%] lg:right-[19%]"
       />
 
-      <div className="relative z-20 flex flex-col items-center text-center max-w-3xl mx-auto">
-        <div
-          ref={badgeRef}
-          className="inline-flex items-center gap-2 bg-[#1A3F26] text-white text-sm md:text-base font-semibold px-5 py-2 rounded-full mb-6"
-          style={{ opacity: 0 }}
-        >
-          <span className="w-2 h-2 bg-[#E85206] rounded-full animate-pulse" />
-          Kenali Kami Lebih Dekat
-        </div>
+      <Tree
+        side="left"
+        size="sm"
+        className="absolute w-[25vw] md:w-[23vw] lg:w-[10vw] top-[35%] left-5 md:top-[25%] md:left-[1%] lg:top-[40%] lg:left-[13%]"
+      />
+      <Tree
+        side="right"
+        size="sm"
+        className="absolute w-[25vw] md:w-[23vw] lg:w-[10vw] top-[35%] right-5 md:top-[25%] md:right-[1%] lg:top-[25%] lg:right-[7%]"
+      />
 
+      <div className="w-full flex items-center justify-center lg:justify-between mt-32 md:mt-14 lg:mt-20">
+        <RightLine />
         <h1
           ref={titleRef}
-          className="font-mochi text-5xl md:text-7xl lg:text-8xl text-[#1A3F26] leading-tight mb-6"
-          style={{ opacity: 0 }}
+          className="text-7xl md:text-8xl lg:text-[140px] font-mochi text-[#1A3F26] text-center leading-none"
         >
-          Tentang Yakba
+          Tentang <br /> Yakba
         </h1>
-
-        <p
-          ref={subtitleRef}
-          className="font-poppins text-lg md:text-xl lg:text-2xl text-[#1A3F26]/80 max-w-xl leading-relaxed"
-          style={{ opacity: 0 }}
-        >
-          Tempat anak-anak belajar dengan cara yang paling menyenangkan —{" "}
-          <span className="font-semibold text-[#E85206]">bercerita</span>,{" "}
-          <span className="font-semibold text-[#0474BE]">bermain</span>, dan{" "}
-          <span className="font-semibold text-[#1A3F26]">bernyanyi</span>.
-        </p>
+        <LeftLine />
       </div>
 
-      {/* Decorative wave bottom */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg
-          viewBox="0 0 1440 120"
-          className="w-full h-16 md:h-20 lg:h-24"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,32 C360,96 720,0 1080,64 C1260,96 1380,80 1440,72 L1440,120 L0,120 Z"
-            fill="white"
-          />
-        </svg>
-      </div>
+      <Pool className="absolute w-[43vw] md:w-[30vw] lg:w-[13vw] bottom-[12%] md:bottom-[18%] lg:bottom-[3%] left-0" />
+
+      <Grass
+        delay={1.5}
+        skewAmount={15}
+        className="absolute cursor-pointer w-[12vw] md:w-[10vw] lg:w-[6vw] bottom-[24%] left-[65%] md:bottom-[30%] md:left-[65%] lg:bottom-[8%] lg:left-[17%]"
+      />
+      <Grass
+        delay={1.8}
+        skewAmount={12}
+        className="absolute cursor-pointer w-[12vw] md:w-[10vw] lg:w-[6vw] bottom-[20%] right-[5%] md:bottom-[23%] md:right-[8%] lg:bottom-[8%] lg:right-[15%]"
+      />
+      <Grass
+        delay={2.1}
+        skewAmount={18}
+        className="absolute cursor-pointer w-[12vw] md:w-[10vw] lg:w-[6vw] bottom-[16%] right-[30%] md:bottom-[20%] md:right-[40%] lg:bottom-[16%] lg:right-[8%]"
+      />
+
+      <Ellipse
+        className="absolute w-[80vw] lg:w-[50vw]
+          -bottom-[2%] md:-bottom-[3%] lg:-bottom-[8%] left-auto"
+      />
+
+      {/* Cluster kiri */}
+      <Stone className="absolute w-[8vw] lg:w-[4vw] h-auto bottom-[7%] left-[6%] lg:bottom-[18%] lg:left-[15%]" />
+      <Stone className="absolute w-[4vw] lg:w-[2vw] h-auto bottom-[6.5%] left-[5%] lg:bottom-[17%] lg:left-[14%]" />
+
+      {/* Cluster kanan */}
+      <Stone className="absolute w-[8vw] lg:w-[4vw] h-auto bottom-[7.5%] right-[6%] lg:bottom-[3%] lg:right-[6%]" />
+      <Stone className="absolute w-[4vw] lg:w-[2vw] h-auto bottom-[7%] right-[4%] lg:bottom-[2.5%] lg:right-[4%]" />
+      <Stone className="absolute w-[6vw] lg:w-[3vw] h-auto bottom-[9%] right-[3.5%] lg:bottom-[5%] lg:right-[4.5%]" />
     </section>
   );
 };

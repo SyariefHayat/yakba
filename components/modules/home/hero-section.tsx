@@ -1,4 +1,3 @@
-import Butterfly from "../elements/butterfly";
 import Circle from "../elements/circle";
 import CloudCenter from "../elements/cloud-center";
 import CloudLeft from "../elements/cloud-left";
@@ -12,7 +11,6 @@ import Stone from "../elements/stone";
 import Text from "../elements/text";
 import Star from "../elements/star";
 import Tree from "../elements/tree";
-import TreeLeft from "../elements/tree-left";
 
 const HeroSection = () => {
   return (
