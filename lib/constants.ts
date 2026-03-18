@@ -8,72 +8,74 @@ export const MENU_ITEMS = [
 
 export const FEATURES_ITEMS = [
   {
-    id: "interactive-learning",
-    title: "Belajar Interaktif",
+    id: "video-belajar-anak",
+    title: "Video Belajar Anak",
     description:
-      "Belajar aktif yang menumbuhkan rasa ingin tahu dan percaya diri.",
-    imageAlt: "Ilustrasi belajar interaktif",
+      "Konten video yang membantu anak menghafal doa dan memahami nilai Islam dengan mudah.",
+    imageAlt: "Ilustrasi video belajar anak",
     isReverse: false,
   },
   {
-    id: "islamic-curriculum",
-    title: "Kurikulum Islami & Bahasa Arab",
+    id: "materi-terstruktur",
+    title: "Materi Terstruktur",
     description:
-      "Pembelajaran nilai Islam dan Bahasa Arab sejak dini untuk membentuk akhlak dan dasar berbahasa anak.",
-    imageAlt: "Ilustrasi kurikulum Islami dan Bahasa Arab",
+      "Materi disusun bertahap dan mudah diikuti oleh anak usia dini.",
+    imageAlt: "Ilustrasi materi terstruktur",
     isReverse: true,
   },
   {
-    id: "flexible-learning",
-    title: "Fleksibel & Terukur",
+    id: "untuk-orang-tua-&-guru",
+    title: "Untuk Orang Tua & Guru",
     description:
-      "Pilihan kelas online dan offline dengan perkembangan anak yang nyata dan terpantau.",
-    imageAlt: "Ilustrasi pembelajaran fleksibel",
+      "Cocok digunakan untuk belajar di rumah maupun di sekolah / TPA.",
+    imageAlt: "Ilustrasi untuk orang tua & guru",
     isReverse: false,
   },
 ];
 
 export const PROGRAM_ITEMS = [
   {
-    id: "kreativitas-seni",
-    title: "Kreativitas Seni",
+    id: "doa-harian-anak",
+    title: "Doa Harian Anak",
     description:
-      "Menggambar, melukis, membuat prakarya untuk mengasah kreativitas anak.",
+      "Membantu anak menghafal doa sehari-hari dengan cara yang mudah dan menyenangkan.",
   },
   {
     id: "belajar-mengaji",
     title: "Belajar Mengaji",
-    description: "Program intensif mengaji dengan metode tahsin dan tajwid.",
+    description:
+      "Mengenal huruf hijaiyah dan membaca Al-Qur'an dengan dasar tajwid.",
   },
   {
-    id: "kelas-bahasa",
-    title: "Kelas Bahasa",
-    description: "Belajar bahasa asing dengan pendekatan permainan interaktif.",
+    id: "aktivitas-kreatif-anak",
+    title: "Aktivitas Kreatif Anak",
+    description:
+      "Menggambar, bercerita, dan bermain untuk mengembangkan imajinasi dan kepercayaan diri.",
   },
 ];
 
 export const PRODUCT_ITEMS = [
   {
-    id: "buku-mewarnai",
-    title: "Buku Mewarnai",
+    id: "doa-harian-anak",
+    title: "Video Doa Harian Anak",
     description:
-      "Buku mewarnai islami yang mengajarkan huruf hijaiyah, doa harian, dan kisah nabi melalui aktivitas kreatif.",
-    icon: "🎨",
+      "Video animasi yang membantu anak menghafal doa sehari-hari dengan mudah.",
+    icon: "🎬",
     color: "#FF6B6B",
   },
   {
-    id: "video-doa",
-    title: "Video Doa-Doa",
+    id: "belajar-mengaji",
+    title: "Buku Aktivitas Islami",
     description:
-      "Koleksi video animasi doa harian anak dengan visualisasi menarik dan pengucapan yang mudah diikuti.",
-    icon: "🎬",
+      "Buku mewarnai yang mengenalkan huruf hijaiyah, doa, dan kisah nabi melalui aktivitas kreatif.",
+    icon: "🎨",
     color: "#0474BE",
   },
   {
-    id: "merch-yakba",
-    title: "Merch Yakba",
+    id: "aktivitas-kreatif-anak",
+    title: "Merchandise Yakba",
     description:
-      "Merchandise resmi Yakba — kaos, topi, dan tas eksklusif dengan desain edukatif dan islami.",
+      "Produk eksklusif Yakba seperti kaos dan tas dengan desain islami untuk anak.",
     icon: "👕",
     color: "#E85206",
   },

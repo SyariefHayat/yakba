@@ -14,13 +14,13 @@ const ProgramSection = () => {
           id="program-heading"
           className="w-full sm:w-1/2 lg:w-[40%] font-mochi text-3xl sm:text-4xl md:text-5xl leading-tight"
         >
-          Program untuk Setiap Tahap Pertumbuhan Awal
+          Apa yang Anak Pelajari di Yakba ?
         </h2>
         <div className="w-full sm:w-[45%] space-y-4 sm:space-y-5">
           <p className="text-base sm:text-lg leading-relaxed text-gray-600">
-            Di Yakba, kami memupuk potensi unik setiap anak melalui metode
-            Montessori — menumbuhkan kemandirian, kreativitas, dan kecintaan
-            belajar sepanjang hayat.
+            Kami menghadirkan pengalaman belajar yang membantu anak mengenal
+            nilai Islam sejak dini melalui video, aktivitas kreatif, dan
+            pembelajaran yang menyenangkan.
           </p>
           <Link href="/program">
             <Button className="bg-green-600 hover:bg-green-700 transition-colors text-white cursor-pointer">

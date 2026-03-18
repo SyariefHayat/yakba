@@ -14,13 +14,12 @@ const ProductSection = () => {
           id="product-heading"
           className="w-full sm:w-1/2 lg:w-[40%] font-mochi text-3xl sm:text-4xl md:text-5xl leading-tight"
         >
-          Disayangi oleh orang tua, digemari oleh anak-anak
+          Produk Edukasi Anak dari Yakba
         </h2>
         <div className="w-full sm:w-[45%] space-y-4 sm:space-y-5">
           <p className="text-base sm:text-lg leading-relaxed text-gray-600">
-            Produk edukatif islami yang dirancang khusus untuk menemani tumbuh
-            kembang anak — dari buku mewarnai hingga video pembelajaran
-            interaktif.
+            Produk pembelajaran islami yang membantu anak belajar doa, mengenal
+            huruf hijaiyah, dan mengembangkan kreativitas sejak dini.
           </p>
           <Link href="/product">
             <Button className="bg-green-600 hover:bg-green-700 transition-colors text-white cursor-pointer">

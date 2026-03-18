@@ -53,12 +53,12 @@ const FeatureSection = () => {
             id="features-heading"
             className="font-mochi text-3xl sm:text-5xl md:text-6xl text-[#1A3F26]"
           >
-            Program Pembelajaran Sesuai Tahap Perkembangan Anak
+            Belajar Doa Anak dengan Cara Bermain, Bernyanyi, dan Bercerita
           </h2>
           <p className="w-[95%] sm:w-[90%] text-base sm:text-xl text-center mx-auto leading-relaxed">
-            Di Yakba, setiap anak didampingi untuk berkembang secara optimal
-            melalui pendekatan Montessori yang mendorong kemandirian,
-            kreativitas, serta kecintaan belajar sepanjang hayat.
+            Yakba Learning Center menghadirkan video pembelajaran islami yang
+            membantu anak belajar doa dan nilai Islam dengan cara yang
+            menyenangkan.
           </p>
           <Button className="p-5 text-white bg-green-600 hover:bg-green-700 transition-colors">
             Bergabung Sekarang
