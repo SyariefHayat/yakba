@@ -69,7 +69,7 @@ const Text = () => {
   }, []);
 
   return (
-    <div className="flex w-[90%] -left-2 md:w-[65%] md:-left-5 lg:w-[60%] lg:-left-10 relative z-20 bottom-0">
+    <div className="flex w-[90%] -left-2 md:w-[75%] md:-left-5 lg:w-[60%] lg:-left-10 relative z-20 bottom-0">
       {/* Y */}
       <svg
         width="217"
