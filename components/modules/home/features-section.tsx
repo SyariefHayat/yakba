@@ -66,20 +66,18 @@ const FeatureSection = () => {
         </div>
 
         {/* Tree kiri */}
-        <div className="absolute left-0 -bottom-3 sm:hidden">
-          <Tree side="left" size="sm" />
-        </div>
-        <div className="absolute left-0 bottom-0 hidden sm:block">
-          <Tree side="left" size="lg" />
-        </div>
+        <Tree
+          side="left"
+          size="sm"
+          className="absolute w-[25vw] lg:w-[20vw] left-0 bottom-0"
+        />
 
         {/* Tree kanan */}
-        <div className="absolute right-0 -bottom-3 sm:hidden">
-          <Tree side="right" size="sm" />
-        </div>
-        <div className="absolute right-0 bottom-0 hidden sm:block">
-          <Tree side="right" size="lg" />
-        </div>
+        <Tree
+          side="right"
+          size="sm"
+          className="absolute w-[25vw] lg:w-[20vw] right-0 bottom-0"
+        />
       </div>
     </section>
   );

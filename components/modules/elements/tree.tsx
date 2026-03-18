@@ -178,7 +178,7 @@ const Tree = ({ side, size = "lg", className = "" }: TreeProps) => {
       viewBox="0 0 147 172"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="cursor-pointer"
+      className="w-full h-auto cursor-pointer"
     >
       <rect
         x="55.6428"
@@ -209,7 +209,7 @@ const Tree = ({ side, size = "lg", className = "" }: TreeProps) => {
       viewBox="0 0 147 205"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="cursor-pointer"
+      className="w-full h-auto cursor-pointer border"
     >
       <rect
         x="55.6428"
